@@ -9,7 +9,7 @@ class UserController{
   //   return res.status(200).send({
   //     body: { users },
   //   });
-  // };
+  // }; 
 
   findOne = async (req: Request, res: Response): Promise<Response> => {
     const findOneUserService = new FindOneUserService()

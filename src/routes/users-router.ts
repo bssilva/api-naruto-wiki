@@ -1,7 +1,5 @@
 import express from 'express'
 import UserController from "../controller/users-controller"
-import UserRepository from '../repository/user-repository'
-import UserService from '../services/users-service'
 
 const usersController = new UserController()
 

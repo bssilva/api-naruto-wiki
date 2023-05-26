@@ -1,9 +1,8 @@
 import { PrismaClient, users } from "@prisma/client";
-import { IUserRepository } from "../contracts/repository/user-repository-contract";
 import AppError from "../shared/appError";
 import IResponseGet from "../interfaces/users/IResponseGet";
 
-class UserRepository implements IUserRepository {
+class UserRepository{
   private prisma = new PrismaClient();
 
   // async list() : Promise<IResponseGet[]> {
