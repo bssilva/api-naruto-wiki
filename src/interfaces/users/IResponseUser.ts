@@ -1,11 +1,11 @@
-type Users = {
-    id: number
+interface IResponseUser {
+    id: number,
     name: string,
     avatar: string,
     email: string,
     password: string,
-    birth_date: Date,
     createdAt: Date,
+    birth_date: Date,
 }
 
-export default Users
+export default IResponseUser

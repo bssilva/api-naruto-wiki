@@ -1,7 +1,6 @@
 import express from 'express'
 import cors from 'cors'
 import usersRouter from './routes/users-router'
-import clansRouter from './routes/clans-router'
 
 const PORT = process.env.PORT || 4000
 const HOSTNAME = process.env.HOSTNAME || 'http://localhost'
@@ -13,9 +12,6 @@ app.use(express.json());
 
 /* Rotas do usuario */
 app.use('/api', usersRouter)
-
-/* Rotas dos clans */
-app.use('/api', clansRouter)
 
 
 app.use(cors({

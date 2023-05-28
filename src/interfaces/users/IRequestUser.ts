@@ -1,5 +1,5 @@
-interface IRequestPut {
-    id: number;
+interface IRequestUser {
+    id?: number,
     name: string;
     avatar: string;
     email: string;
@@ -7,4 +7,4 @@ interface IRequestPut {
     birth_date: Date;
     createdAt: Date
 }
-export default IRequestPut
+export default IRequestUser
