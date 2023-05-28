@@ -1,4 +1,4 @@
-import UserRepository  from "../../repository/user-repository"
+import UserRepository  from "../../repository/users-repository"
 import IRequestUser from "../../interfaces/users/IRequestUser";
 import AppError from "../../shared/appError";
 import * as argon2 from "argon2";;

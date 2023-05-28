@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import usersRouter from './routes/users-router'
+import clansRouter from './routes/clans-route'
 
 const PORT = process.env.PORT || 4000
 const HOSTNAME = process.env.HOSTNAME || 'http://localhost'
@@ -13,6 +14,8 @@ app.use(express.json());
 /* Rotas do usuario */
 app.use('/api', usersRouter)
 
+/* Rotas do clan */
+app.use('/api', clansRouter)
 
 app.use(cors({
     origin: ['http://localhost:3000']

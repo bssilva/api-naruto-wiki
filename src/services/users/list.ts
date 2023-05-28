@@ -1,4 +1,4 @@
-import UserRepository from "../../repository/user-repository";
+import UserRepository from "../../repository/users-repository";
 
 export default class ListUserService {
   async execute() {
