@@ -7,7 +7,7 @@ export default class FindOneClanService{
         if(!parseInt(id)) throw new AppError("Dados inválidos! O ID do clan deve ser um valor numérico inteiro.", 406) 
     
         const newId = parseInt(id)
-        
+         
         const clansRepository = new ClansRepository()
 
         const clan = clansRepository.findOne(newId)
