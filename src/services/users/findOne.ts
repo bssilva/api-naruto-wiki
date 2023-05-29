@@ -19,6 +19,6 @@ export default class FindOneUserService {
       birth_date: user.birth_date
     };
 
-    return response;
+    return user;
   }
 }

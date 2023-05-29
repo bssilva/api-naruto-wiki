@@ -1,6 +1,6 @@
 import ClansRepository from "../../repository/clans-repository";
 
-export default class ListUserService {
+export default class ListClanService {
   async execute() {
     const clansRepository = new ClansRepository();
 

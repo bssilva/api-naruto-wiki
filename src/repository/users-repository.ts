@@ -1,4 +1,4 @@
-import { PrismaClient, users } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import AppError from "../shared/appError";
 import IRequestUser from "../interfaces/users/IRequestUser";
 import IResponseUser from "../interfaces/users/IResponseUser";
