@@ -1,5 +1,5 @@
 interface IRequestClan {
-  id: number;
+  id?: number;
   name: string;
   link: string;
   icon: string;

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import AppError from "../shared/appError";
 import ListClanService from "../services/clans/list";
 import FindOneClanService from "../services/clans/findOne";
+import CreateClanService from "../services/clans/create";
 
 class ClansController {
   list = async (req: Request, res: Response): Promise<Response> => {
@@ -19,20 +20,38 @@ class ClansController {
 
     const findOneClanService = new FindOneClanService();
 
-    try{
-        const clan = await findOneClanService.execute(id);
-        return res.status(200).send({
-            body: { clan },
-        });
-
-    }catch (err) {
-        if (err instanceof AppError) {
-          const { statusCode } = err;
-          return res.status(statusCode).send({ body: err });
-        }
-        return res.status(400).send({ body: err });
-      
+    try {
+      const clan = await findOneClanService.execute(id);
+      return res.status(200).send({
+        body: { clan },
+      });
+    } catch (err) {
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
       }
+      return res.status(400).send({ body: err });
+    }
+  };
+
+  create = async (req: Request, res: Response): Promise<Response> => {
+    const { name, link, icon } = req.body;
+
+    const createClanService = new CreateClanService()
+    
+    try{
+      const clan = await createClanService.execute({ name, link, icon })
+      return res.status(201).send({
+        body: { clan },
+      });
+    }catch(err){
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+    }
+  
   };
 }
 

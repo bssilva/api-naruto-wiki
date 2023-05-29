@@ -3,7 +3,7 @@ import cors from 'cors'
 import usersRouter from './routes/users-router'
 import clansRouter from './routes/clans-route'
 
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 4001
 const HOSTNAME = process.env.HOSTNAME || 'http://localhost'
 
 const app = express()
