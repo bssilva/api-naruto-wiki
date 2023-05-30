@@ -3,6 +3,7 @@ import AppError from "../shared/appError";
 import ListClanService from "../services/clans/list";
 import FindOneClanService from "../services/clans/findOne";
 import CreateClanService from "../services/clans/create";
+import UpdateClanService from "../services/clans/update";
 
 class ClansController {
   list = async (req: Request, res: Response): Promise<Response> => {
@@ -10,9 +11,7 @@ class ClansController {
 
     const clans = await listClanService.execute();
 
-    return res.status(200).send({
-      body: { clans },
-    });
+    return res.status(200).send({ body: clans });
   };
 
   findOne = async (req: Request, res: Response): Promise<Response> => {
@@ -22,9 +21,8 @@ class ClansController {
 
     try {
       const clan = await findOneClanService.execute(id);
-      return res.status(200).send({
-        body: { clan },
-      });
+      return res.status(200).send({ body: clan });
+
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
@@ -41,9 +39,8 @@ class ClansController {
     
     try{
       const clan = await createClanService.execute({ name, link, icon })
-      return res.status(201).send({
-        body: { clan },
-      });
+      return res.status(201).send({ body: clan });
+
     }catch(err){
       if (err instanceof AppError) {
         const { statusCode } = err;
@@ -53,6 +50,27 @@ class ClansController {
     }
   
   };
+
+  update = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params
+    const { name, link, icon} = req.body
+
+    const updateClanService = new UpdateClanService()
+
+    try{
+      const clan = await updateClanService.execute({id: Number(id), name, link, icon})
+      return res.status(201).send({ body: clan });
+      
+    }catch (err) {
+
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+      
+    }
+  }
 }
 
 export default ClansController;

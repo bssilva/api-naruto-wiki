@@ -22,7 +22,7 @@ model users {
 
 model clans {
   id         Int    @id @default(autoincrement())
-  name       String
+  name       String @unique
   link       String
   icon       String
 }

@@ -23,11 +23,29 @@ class ClansRepository {
   }
 
   async create({ name, link, icon }: IRequestClan): Promise<IResponseClan> {
-    const clan = await this.prisma.clans.create({
-      data: { name, link, icon },
-    });
+    try{
+      const clan = await this.prisma.clans.create({
+        data: { name, link, icon },
+      });
+      return clan
 
-    return clan
+    }catch(err){
+      throw new AppError("Nome de Clan ja existente.", 409)
+    }
+
+  }
+
+  async update({ id, name, link, icon }: IRequestClan) : Promise<IResponseClan>{
+    try{
+      const clan = await this.prisma.clans.update({
+        where: { id },
+        data: { name, link, icon }
+      })
+      return clan
+
+    }catch(err){
+      throw new AppError("Nome de clan ja existente.", 409)
+    }
   }
 }
 

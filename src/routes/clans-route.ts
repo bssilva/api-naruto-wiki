@@ -8,6 +8,6 @@ const usersRouter = express.Router()
 usersRouter.get('/clans', clansController.list)
 usersRouter.get('/clans/:id', clansController.findOne)
 usersRouter.post('/clans', clansController.create)
-// usersRouter.put('/users/:id', usersController.update)
+usersRouter.put('/clans/:id', clansController.update)
 
 export default usersRouter
