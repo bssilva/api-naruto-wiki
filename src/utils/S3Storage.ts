@@ -12,7 +12,7 @@ class S3Storage {
     this.client = new aws.S3({
       region: "sa-east-1",
     });
-  }
+  };
 
   async saveFile(filename: string, bucket: string): Promise<string> {
     const originalPath = resolve(multerConfig.directory, filename);
@@ -37,12 +37,12 @@ class S3Storage {
         Key: filename
     };
     
-    let urlImg = this.client.getSignedUrl('getObject', params)
-    urlImg = urlImg.split('?')[0]
+    let urlImg = this.client.getSignedUrl('getObject', params);
+    urlImg = urlImg.split('?')[0];
 
     await fs.promises.unlink(originalPath);
 
-    return urlImg
+    return urlImg;
   }
 
 }

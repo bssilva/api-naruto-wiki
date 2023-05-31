@@ -7,7 +7,7 @@ import UpdateUserService from "../services/users/update";
 
 class UserController{
   list = async (req: Request, res: Response): Promise<Response> => {
-    const listUserService = new ListUserService()
+    const listUserService = new ListUserService();
 
     const users = await listUserService.execute();
 
@@ -17,7 +17,7 @@ class UserController{
   }; 
  
   findOne = async (req: Request, res: Response): Promise<Response> => {
-    const findOneUserService = new FindOneUserService()
+    const findOneUserService = new FindOneUserService();
     
     const { id } = req.params;
 
@@ -39,9 +39,9 @@ class UserController{
   create = async (req: Request, res: Response): Promise<Response> => {
     try {
       const { name, email, password, birth_date, createdAt } = req.body;
-      const avatar = req.file?.filename
+      const avatar = req.file?.filename;
 
-      const createUserService = new CreateUserService()
+      const createUserService = new CreateUserService();
 
       const user = await createUserService.execute({ name, avatar, email, password, createdAt, birth_date });
       

@@ -12,7 +12,7 @@ export default class UpdateClanService {
 
     const clansRepository = new ClansRepository();
     
-    await clansRepository.findOne(id)
+    await clansRepository.findOne(id);
 
     const clan = await clansRepository.update({id, name, link, icon });
 

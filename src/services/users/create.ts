@@ -7,20 +7,20 @@ import * as argon2 from "argon2";;
 export default class CreateUserService{
     async execute({name, avatar, email, password, birth_date, createdAt}: IRequestUser) {
         if(!name || !avatar || !email || !password || !birth_date) 
-            throw new AppError("Necessário enviar todos os campos obrigatórios.", 400)
+            throw new AppError("Necessário enviar todos os campos obrigatórios.", 400);
         
         createdAt ? 
             createdAt = new Date(createdAt) :
-            createdAt = new Date() 
+            createdAt = new Date();
         
-        birth_date = new Date(birth_date)
+        birth_date = new Date(birth_date);
 
         const hash = await argon2.hash(password);
 
-        const s3Storage = new S3Storage()
-        const userRepository = new UserRepository()
+        const s3Storage = new S3Storage();
+        const userRepository = new UserRepository();
 
-        const urlImg = await s3Storage.saveFile(avatar, "avatar-user-api")
+        const urlImg = await s3Storage.saveFile(avatar, "avatar-user-api");
 
         const user = await userRepository.create({name, avatar: urlImg, email, password: hash, birth_date, createdAt});
 

@@ -34,7 +34,8 @@ class ClansController {
 
   create = async (req: Request, res: Response): Promise<Response> => {
     const { name, link } = req.body;
-    const icon = req.file?.filename
+    const icon = req.file?.filename;
+
     const createClanService = new CreateClanService()
     
     try{
@@ -52,13 +53,13 @@ class ClansController {
   };
 
   update = async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params
-    const { name, link, icon} = req.body
+    const { id } = req.params;
+    const { name, link, icon} = req.body;
 
-    const updateClanService = new UpdateClanService()
+    const updateClanService = new UpdateClanService();
 
     try{
-      const clan = await updateClanService.execute({id: Number(id), name, link, icon})
+      const clan = await updateClanService.execute({id: Number(id), name, link, icon});
       return res.status(201).send({ body: clan });
       
     }catch (err) {

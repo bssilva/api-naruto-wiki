@@ -4,14 +4,14 @@ import AppError from "../../shared/appError";
 export default class FindOneClanService{
     async execute(id: string){
         
-        if(!parseInt(id)) throw new AppError("Dados inválidos! O ID do clan deve ser um valor numérico inteiro.", 406) 
+        if(!parseInt(id)) throw new AppError("Dados inválidos! O ID do clan deve ser um valor numérico inteiro.", 406);
     
-        const newId = parseInt(id)
+        const newId = parseInt(id);
          
-        const clansRepository = new ClansRepository()
+        const clansRepository = new ClansRepository();
 
-        const clan = await clansRepository.findOne(newId)
+        const clan = await clansRepository.findOne(newId);
         
-        return clan
+        return clan;
     }
 }

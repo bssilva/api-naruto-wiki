@@ -11,10 +11,10 @@ export default class CreateClanService {
         400
       );
     
-    const s3Storage = new S3Storage()
+    const s3Storage = new S3Storage();
     const clansRepository = new ClansRepository();
 
-    const urlImg = await s3Storage.saveFile(icon, "icon-clan")
+    const urlImg = await s3Storage.saveFile(icon, "icon-clan");
     
     const clan = await clansRepository.create({ name, link, icon: urlImg });
 

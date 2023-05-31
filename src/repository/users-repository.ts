@@ -8,9 +8,8 @@ class UserRepository {
 
   async list() : Promise<IResponseUser[]> {
     const users = await this.prisma.users.findMany();
-   
     return users;
-  }
+  };
 
   async findOne(id: number) : Promise<IResponseUser> {
     const user = await this.prisma.users.findUnique({
@@ -20,11 +19,11 @@ class UserRepository {
     if (!user) throw new AppError("Usuário não encontrado", 404);
 
     return user;
-  }
+  };
   
   async create({name, avatar, email, password, birth_date, createdAt}: IRequestUser) : Promise<IResponseUser>{
     try {
-      if(!avatar) throw new AppError("Avatar do usuário é obrigatório", 400)
+      if(!avatar) throw new AppError("Avatar do usuário é obrigatório", 400);
       
       const user = await this.prisma.users.create({
         data: { name, avatar, email, password, birth_date, createdAt }
@@ -34,7 +33,7 @@ class UserRepository {
     } catch (err) {
       throw new AppError("Email ja existente", 409);
     }
-  }
+  };
 
   async update({id, name, avatar, email, password, birth_date, createdAt}: IRequestUser) : Promise<IResponseUser>{
     try{
@@ -46,9 +45,9 @@ class UserRepository {
       
       return user;
     }catch(err){
-      throw new AppError("Email ja existente", 409)
+      throw new AppError("Email ja existente", 409);
     }
-  }
+  };
 }
 
 export default UserRepository;

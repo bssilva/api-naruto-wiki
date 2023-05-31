@@ -2,7 +2,7 @@ import multer from "multer";
 import { resolve } from "path";
 import { randomBytes } from "crypto";
 
-const tempFolder = resolve(__dirname, "..", "temp")
+const tempFolder = resolve(__dirname, "..", "temp");
 
 export default {
     directory: tempFolder,
@@ -16,4 +16,4 @@ export default {
             return callback(null, filename)
         }
     })
-}
+};
