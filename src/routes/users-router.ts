@@ -12,6 +12,6 @@ const uploadImage = multer(multerConfig);
 usersRouter.get('/users', usersController.list);
 usersRouter.get('/users/:id', usersController.findOne);
 usersRouter.post('/users', uploadImage.single('avatar'), usersController.create);
-usersRouter.put('/users/:id', usersController.update);
+usersRouter.put('/users/:id', uploadImage.single('avatar'), usersController.update);
 
 export default usersRouter;

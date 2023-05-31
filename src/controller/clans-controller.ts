@@ -54,7 +54,8 @@ class ClansController {
 
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    const { name, link, icon} = req.body;
+    const { name, link } = req.body;
+    const icon = req.file?.filename;
 
     const updateClanService = new UpdateClanService();
 

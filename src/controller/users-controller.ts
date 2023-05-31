@@ -60,8 +60,9 @@ class UserController{
 
   async update(req: Request, res: Response) {
     try {
-      const { name, avatar, email, password, birth_date, createdAt } = req.body;
+      const { name, email, password, birth_date, createdAt } = req.body;
       const { id } = req.params
+      const avatar = req.file?.filename;
       
       const updateUserService = new UpdateUserService()
       const user = await updateUserService.execute({ id: Number(id), name, avatar, email, password, createdAt, birth_date });

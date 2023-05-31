@@ -12,6 +12,6 @@ const uploadImage = multer(multerConfig);
 usersRouter.get('/clans', clansController.list);
 usersRouter.get('/clans/:id', clansController.findOne);
 usersRouter.post('/clans', uploadImage.single('icon'), clansController.create);
-usersRouter.put('/clans/:id', clansController.update);
+usersRouter.put('/clans/:id', uploadImage.single('icon'), clansController.update);
 
 export default usersRouter;

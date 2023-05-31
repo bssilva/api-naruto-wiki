@@ -1,6 +1,7 @@
 import UserRepository from "../../repository/users-repository";
 import IRequestUser from "../../interfaces/users/IRequestUser";
 import AppError from "../../shared/appError";
+import S3Storage from "../../utils/S3Storage";
 import * as argon2 from "argon2";
 
 export default class UpdateUserService {
@@ -8,12 +9,7 @@ export default class UpdateUserService {
     if(!id || !name || !avatar || !email || !password || !birth_date || !id) 
       throw new AppError("Necessário enviar todos os campos obrigatórios.", 400);
     
-    const userRepository = new UserRepository();
-    const newId = id;
-    const findOneUser = await userRepository.findOne(newId);
-    
-    if(await !argon2.verify(findOneUser.password, password))
-      password = await argon2.hash(password);
+    password = await argon2.hash(password);
 
     createdAt ? 
         createdAt = new Date(createdAt) :
@@ -21,7 +17,12 @@ export default class UpdateUserService {
     
     birth_date = new Date(birth_date);
     
-    const user = await userRepository.update({id, name, avatar, email, password, birth_date, createdAt});
+    const s3Storage = new S3Storage();
+    const userRepository = new UserRepository();
+    
+    const urlImg = await s3Storage.saveFile(avatar, "avatar-user-api");
+
+    const user = await userRepository.update({id, name, avatar: urlImg, email, password, birth_date, createdAt});
     
     const response = {
       id: user.id,
