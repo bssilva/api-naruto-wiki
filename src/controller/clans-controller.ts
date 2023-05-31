@@ -33,8 +33,8 @@ class ClansController {
   };
 
   create = async (req: Request, res: Response): Promise<Response> => {
-    const { name, link, icon } = req.body;
-
+    const { name, link } = req.body;
+    const icon = req.file?.filename
     const createClanService = new CreateClanService()
     
     try{

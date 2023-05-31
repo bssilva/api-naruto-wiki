@@ -24,9 +24,12 @@ class ClansRepository {
 
   async create({ name, link, icon }: IRequestClan): Promise<IResponseClan> {
     try{
+      if(!icon) throw new AppError("Icone do clan obrigatório", 400)
+
       const clan = await this.prisma.clans.create({
         data: { name, link, icon },
       });
+      
       return clan
 
     }catch(err){
