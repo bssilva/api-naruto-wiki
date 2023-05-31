@@ -24,6 +24,8 @@ class UserRepository {
   
   async create({name, avatar, email, password, birth_date, createdAt}: IRequestUser) : Promise<IResponseUser>{
     try {
+      if(!avatar) throw new AppError("Avatar do usuário é obrigatório", 400)
+      
       const user = await this.prisma.users.create({
         data: { name, avatar, email, password, birth_date, createdAt }
       });

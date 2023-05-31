@@ -38,9 +38,11 @@ class UserController{
 
   create = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const { name, avatar, email, password, birth_date, createdAt } = req.body;
-      
+      const { name, email, password, birth_date, createdAt } = req.body;
+      const avatar = req.file?.filename
+
       const createUserService = new CreateUserService()
+
       const user = await createUserService.execute({ name, avatar, email, password, createdAt, birth_date });
       
       return res.status(201).send({ body: user });
