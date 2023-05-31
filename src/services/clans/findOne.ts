@@ -10,7 +10,7 @@ export default class FindOneClanService{
          
         const clansRepository = new ClansRepository()
 
-        const clan = clansRepository.findOne(newId)
+        const clan = await clansRepository.findOne(newId)
         
         return clan
     }
