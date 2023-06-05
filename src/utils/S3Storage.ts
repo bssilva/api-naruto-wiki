@@ -7,14 +7,28 @@ import fs from "fs";
 
 class S3Storage {
   private client: S3;
+  private defaultBucket: string;
 
   constructor() {
     this.client = new aws.S3({
       region: "sa-east-1",
     });
+    this.defaultBucket = "wiki-naruto"
   };
 
-  async saveFile(filename: string, bucket: string): Promise<string> {
+  async getUrlImgBucket(filename: string, folderBucket: string) : Promise<string> {
+    const params = { 
+      Bucket: `${this.defaultBucket}/${folderBucket}`, 
+      Key: filename
+    };
+    
+    let urlImg = this.client.getSignedUrl('getObject', params);
+    urlImg = urlImg.split('?')[0];
+
+    return urlImg
+  }
+
+  async saveFile(filename: string, folderBucket: string): Promise<string> {
     const acceptableImageFormat = ['jpeg', 'jpg', 'png'];
 
     if(!acceptableImageFormat.some(format => filename.toLowerCase().includes(format)))
@@ -27,29 +41,30 @@ class S3Storage {
 
     const fileContent = await fs.promises.readFile(originalPath);
 
-    await this.client
-      .putObject({
-        Bucket: bucket,
-        Key: filename,
-        ACL: "public-read",
-        Body: fileContent,
-        ContentType: contentType,
-      })
-      .promise();
-    
-    const params = { 
-        Bucket: bucket, 
-        Key: filename
-    };
-    
-    let urlImg = this.client.getSignedUrl('getObject', params);
-    urlImg = urlImg.split('?')[0];
+    const params = {
+      Bucket: `${this.defaultBucket}/${folderBucket}`,
+      Key: filename,
+      ACL: "public-read",
+      Body: fileContent,
+      ContentType: contentType,
+    }
 
+    await this.client.putObject(params).promise();
     await fs.promises.unlink(originalPath);
+
+    const urlImg = this.getUrlImgBucket(filename, folderBucket)
 
     return urlImg;
   }
 
+  async deleteFile(filename: string, folderBucket: string) : Promise<void> {
+    const params = { 
+      Bucket: `${this.defaultBucket}/${folderBucket}`, 
+      Key: filename
+    };
+    
+    this.client.deleteObject(params).promise()
+  }
 }
 
 export default S3Storage;

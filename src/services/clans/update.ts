@@ -14,7 +14,11 @@ export default class UpdateClanService {
     const s3Storage = new S3Storage();
     const clansRepository = new ClansRepository();
 
-    await clansRepository.findOne(id);
+    const findClan = await clansRepository.findOne(id);
+    
+    const urlSaveImg = findClan.icon.split('/')
+    const filename = urlSaveImg[urlSaveImg.length - 1]
+    await s3Storage.deleteFile(filename, "icon-clan")
 
     const urlImg = await s3Storage.saveFile(icon, "icon-clan");
 
