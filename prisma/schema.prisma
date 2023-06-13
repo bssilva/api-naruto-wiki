@@ -27,4 +27,13 @@ model clans {
   icon       String
 }
 
+model characters {
+  id         Int    @id @default(autoincrement())
+  about      String[]
+  info       Json
+  page       String
+  name       String @unique
+  images     String[]
+}
+
 
