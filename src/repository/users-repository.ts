@@ -12,9 +12,19 @@ class UserRepository {
     return users;
   };
 
-  async findOne(id: number) : Promise<IResponseUser> {
+  async findOneById(id: number) : Promise<IResponseUser> {
     const user = await this.prisma.users.findUnique({
       where: { id } ,
+    });
+    
+    if (!user) throw new AppError("Usuário não encontrado", 404);
+
+    return user;
+  };
+
+  async findOneByEmail(email: string) : Promise<IResponseUser> {
+    const user = await this.prisma.users.findUnique({
+      where: { email } ,
     });
     
     if (!user) throw new AppError("Usuário não encontrado", 404);

@@ -8,7 +8,7 @@ export default class FindOneUserService {
     const newId = parseInt(id);
     const userRepository = new UserRepository();
 
-    const user = await userRepository.findOne(newId);
+    const user = await userRepository.findOneById(newId);
     
     const response = {
       id: user.id,

@@ -4,6 +4,7 @@ import FindOneUserService from "../services/users/findOne";
 import ListUserService from "../services/users/list";
 import CreateUserService from "../services/users/create";
 import UpdateUserService from "../services/users/update";
+import LoginUserService from "../services/users/login";
 
 class UserController{
   list = async (req: Request, res: Response): Promise<Response> => {
@@ -78,6 +79,26 @@ class UserController{
       return res.status(400).send({ body: err });
       
     }
+  }
+
+  login = async (req: Request, res: Response): Promise<Response> => {
+    const { email, password } = req.body
+    
+    const loginUserService = new LoginUserService()
+    
+    try{
+      const token = await loginUserService.execute(email, password)
+      return res.status(200).send({ body: { token } });
+    }catch(err){
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+    }
+
+
+
   }
 }
 

@@ -20,7 +20,7 @@ export default class UpdateUserService {
     const s3Storage = new S3Storage();
     const userRepository = new UserRepository();
     
-    const findUser = await userRepository.findOne(id);
+    const findUser = await userRepository.findOneById(id);
     
     const urlImg = await s3Storage.saveFile(avatar, "avatar-user-api");
 
