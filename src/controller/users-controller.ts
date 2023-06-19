@@ -58,7 +58,7 @@ class UserController{
     }
   };
 
-  async update(req: Request, res: Response) {
+  update = async (req: Request, res: Response) : Promise<Response> => {
     try {
       const { name, email, password, birth_date, createdAt } = req.body;
       const { id } = req.params

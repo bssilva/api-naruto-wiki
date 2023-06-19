@@ -3,6 +3,7 @@ import AppError from "../shared/appError";
 import ListCharacterService from "../services/characters/list";
 import FindOneCharacterService from "../services/characters/findOne";
 import CreateCharacterService from "../services/characters/create";
+import UpdateCharacterSerice from "../services/characters/update";
 
 class ClansController {
   list = async (req: Request, res: Response): Promise<Response> => {
@@ -51,6 +52,30 @@ class ClansController {
       return res.status(400).send({ body: err });
     }
   };
+
+  update = async (req: Request, res: Response) : Promise<Response> => {
+    try {
+      const { id } = req.params
+      const { name, about, info, page } = req.body;
+      const { images } = (req.files as { [fieldname: string]: Express.Multer.File[] })
+      
+      const nameImages = images.map(image => { return image.originalname })
+      
+      const updateCharacterService = new UpdateCharacterSerice()
+      const character = await updateCharacterService.execute({ id: Number(id), name, about, info, page, images: nameImages });
+
+      return res.status(200).send({ body: character });
+
+    } catch (err) {
+
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+      
+    }
+  }
 }
 
 export default ClansController;

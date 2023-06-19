@@ -1,4 +1,5 @@
 interface IRequestCharacter {
+  id?: number;
   about: string[];
   info: any;
   page: string;

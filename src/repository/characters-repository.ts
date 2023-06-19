@@ -32,27 +32,34 @@ class CharactersRepository {
 
     }catch(err){
       const s3Storage = new S3Storage();
+
       for(const image of images){
         await s3Storage.rollbackImg(image, "images-characters");
       }
-      
+
       throw new AppError("Nome de Personagem ja existente.", 409);
     }
 
   };
  
-  /*async update({ id, name, link, icon }: IRequestClan) : Promise<IResponseClan>{
+  async update({ id , name, about, info, page, images }: IRequestCharacter) : Promise<IResponseCharacter>{
     try{
-      const clan = await this.prisma.clans.update({
+      const character = await this.prisma.characters.update({
         where: { id },
-        data: { name, link, icon }
+        data: { name, about, info, page, images }
       });
-      return clan;
+      return character;
 
     }catch(err){
+      const s3Storage = new S3Storage();
+      
+      for(const image of images){
+        await s3Storage.rollbackImg(image, "images-characters");
+      }
+
       throw new AppError("Nome de clan ja existente.", 409);
     }
-  }; */
+  }; 
 }
 
 export default CharactersRepository;
