@@ -12,8 +12,7 @@ export default {
             const fileHash = randomBytes(10).toString('hex')
             
             const filename = `${fileHash}-${file.originalname}`
-            
-            return callback(null, filename)
+            return callback(null, filename);
         }
     })
 };

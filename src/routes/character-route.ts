@@ -11,5 +11,6 @@ const uploadImage = multer(multerConfig);
 
 charactersRouter.get('/characters', characterController.list);
 charactersRouter.get('/characters/:id', characterController.findOne);
+charactersRouter.post('/characters', uploadImage.fields([{ name: 'images', maxCount: 2}]), characterController.create);
 
 export default charactersRouter;

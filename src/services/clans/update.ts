@@ -15,15 +15,16 @@ export default class UpdateClanService {
     const clansRepository = new ClansRepository();
 
     const findClan = await clansRepository.findOne(id);
-    
-    const urlSaveImg = findClan.icon.split('/')
-    const filename = urlSaveImg[urlSaveImg.length - 1]
-    await s3Storage.deleteFile(filename, "icon-clan")
 
     const urlImg = await s3Storage.saveFile(icon, "icon-clan");
 
     const clan = await clansRepository.update({ id, name, link, icon: urlImg });
 
+    // Deleta imagem antiga na S3
+    const urlSaveImg = findClan.icon.split('/')
+    const filename = urlSaveImg[urlSaveImg.length - 1]
+    await s3Storage.deleteFile(filename, "icon-clan")
+    
     return clan;
   }
 }

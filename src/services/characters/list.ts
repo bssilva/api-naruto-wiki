@@ -4,8 +4,14 @@ export default class ListCharacterService {
   async execute() {
     const characterRepository = new CharacterRepository();
 
-    const clans = await characterRepository.list();
+    let characters = await characterRepository.list();
 
-    return clans;
+    characters = characters.map((character) => {
+      character.info = JSON.parse(character.info);
+      character.about = JSON.parse(character.about[0]);
+      return character;
+    });
+
+    return characters;
   }
 }

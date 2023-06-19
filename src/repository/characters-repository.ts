@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import AppError from "../shared/appError";
 import IResponseCharacter from "../interfaces/characters/IResponseCharacter";
 import IRequestCharacter from "../interfaces/characters/IRequestCharacter";
-
+import S3Storage from "../utils/S3Storage";
 class CharactersRepository {
   private prisma = new PrismaClient();
 
@@ -22,18 +22,21 @@ class CharactersRepository {
     return character;
   };
 
- async create({ name, link, icon }: IRequestCharacter): Promise<IResponseClan> {
+ async create({ name, about, info, page, images }: IRequestCharacter): Promise<IResponseCharacter> {
     try{
-      if(!icon) throw new AppError("Icone do clan obrigatório", 400);
-
-      const clan = await this.prisma.clans.create({
-        data: { name, link, icon },
+      const character = await this.prisma.characters.create({
+        data: { name, about, info, page, images },
       });
       
-      return clan;
+      return character;
 
     }catch(err){
-      throw new AppError("Nome de Clan ja existente.", 409);
+      const s3Storage = new S3Storage();
+      for(const image of images){
+        await s3Storage.rollbackImg(image, "images-characters");
+      }
+      
+      throw new AppError("Nome de Personagem ja existente.", 409);
     }
 
   };

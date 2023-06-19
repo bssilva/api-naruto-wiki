@@ -4,7 +4,7 @@ import usersRouter from './routes/users-router';
 import clansRouter from './routes/clans-route';
 import characterRouter from './routes/character-route';
 
-const PORT = process.env.PORT || 4001;
+const PORT = process.env.PORT || 4000;
 const HOSTNAME = process.env.HOSTNAME || 'http://localhost';
 
 const app = express();

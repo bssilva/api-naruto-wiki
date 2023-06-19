@@ -20,10 +20,17 @@ export default class UpdateUserService {
     const s3Storage = new S3Storage();
     const userRepository = new UserRepository();
     
+    const findUser = await userRepository.findOne(id);
+    
     const urlImg = await s3Storage.saveFile(avatar, "avatar-user-api");
 
     const user = await userRepository.update({id, name, avatar: urlImg, email, password, birth_date, createdAt});
     
+    // Deleta imagem antiga na S3
+    const urlSaveImg = findUser.avatar.split('/')
+    const filename = urlSaveImg[urlSaveImg.length - 1]
+    await s3Storage.deleteFile(filename, "avatar-user-api")
+
     const response = {
       id: user.id,
       name: user.name,

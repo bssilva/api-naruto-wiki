@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import AppError from "../shared/appError";
 import IResponseClan from "../interfaces/clans/IResponseClan";
 import IRequestClan from "../interfaces/clans/IRequestClan";
+import S3Storage from "../utils/S3Storage";
 
 class ClansRepository {
   private prisma = new PrismaClient();
@@ -32,6 +33,9 @@ class ClansRepository {
       return clan;
 
     }catch(err){
+      const s3Storage = new S3Storage();
+      icon && await s3Storage.rollbackImg(icon, "icon-clan");
+
       throw new AppError("Nome de Clan ja existente.", 409);
     }
 
@@ -46,6 +50,9 @@ class ClansRepository {
       return clan;
 
     }catch(err){
+      const s3Storage = new S3Storage();
+      icon && await s3Storage.rollbackImg(icon, "icon-clan");
+
       throw new AppError("Nome de clan ja existente.", 409);
     }
   };

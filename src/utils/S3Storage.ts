@@ -1,9 +1,9 @@
 import aws, { S3 } from "aws-sdk";
 import mime from "mime";
-import { resolve } from "path";
 import multerConfig from "../config/multer";
 import AppError from "../shared/appError";
 import fs from "fs";
+import { resolve } from "path";
 
 class S3Storage {
   private client: S3;
@@ -34,7 +34,12 @@ class S3Storage {
     if(!acceptableImageFormat.some(format => filename.toLowerCase().includes(format)))
       throw new AppError("Formato de imagem inválido. Formatos válidos 'jpg', 'jpeg', 'png'", 409);
 
-    const originalPath = resolve(multerConfig.directory, filename);
+    const folderTemp = await fs.promises.readdir(multerConfig.directory);
+
+    const filenameWithHash = folderTemp.filter((img) => img.includes(filename))[0];
+
+    const originalPath = resolve(multerConfig.directory, filenameWithHash);
+
     const contentType = mime.getType(originalPath);
 
     if (!contentType) throw new AppError("Imagem não encontrada.", 400);
@@ -43,18 +48,19 @@ class S3Storage {
 
     const params = {
       Bucket: `${this.defaultBucket}/${folderBucket}`,
-      Key: filename,
+      Key: filenameWithHash,
       ACL: "public-read",
       Body: fileContent,
       ContentType: contentType,
     }
 
     await this.client.putObject(params).promise();
+    
     await fs.promises.unlink(originalPath);
+    
+    const urlImg = this.getUrlImgBucket(filenameWithHash, folderBucket)
 
-    const urlImg = this.getUrlImgBucket(filename, folderBucket)
-
-    return urlImg;
+    return urlImg; 
   }
 
   async deleteFile(filename: string, folderBucket: string) : Promise<void> {
@@ -62,8 +68,14 @@ class S3Storage {
       Bucket: `${this.defaultBucket}/${folderBucket}`, 
       Key: filename
     };
-    
     this.client.deleteObject(params).promise()
+  }
+
+  async rollbackImg(filename: string, folderBucket: string) : Promise<void> {
+    const splitUrl = filename.split('/')
+    const nameImg = splitUrl && splitUrl[splitUrl.length - 1]
+
+    await this.deleteFile(nameImg, folderBucket)
   }
 }
 

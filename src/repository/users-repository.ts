@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import AppError from "../shared/appError";
 import IRequestUser from "../interfaces/users/IRequestUser";
 import IResponseUser from "../interfaces/users/IResponseUser";
+import S3Storage from "../utils/S3Storage";
 
 class UserRepository {
   private prisma = new PrismaClient();
@@ -31,6 +32,9 @@ class UserRepository {
 
       return user;
     } catch (err) {
+      const s3Storage = new S3Storage();
+      avatar && await s3Storage.rollbackImg(avatar, "avatar-user-api");
+      
       throw new AppError("Email ja existente", 409);
     }
   };
@@ -45,6 +49,9 @@ class UserRepository {
       
       return user;
     }catch(err){
+      const s3Storage = new S3Storage();
+      avatar && await s3Storage.rollbackImg(avatar, "avatar-user-api");
+      
       throw new AppError("Email ja existente", 409);
     }
   };
