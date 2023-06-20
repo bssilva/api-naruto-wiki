@@ -18,7 +18,7 @@ export default class CreateUserService {
     if (!await argon2.verify(dataUser.password, password)) 
         throw new AppError("Email ou senha inválido", 401)
     
-    const token = jwt.sign({ email: dataUser.email }, 'segredo_do_seu_token_jwt', { expiresIn: '1h' });
+    const token = jwt.sign({ email: dataUser.email }, process.env.JWT_SECRET_KEY || "1234", { expiresIn: '1h' });
     return token
 
   }
