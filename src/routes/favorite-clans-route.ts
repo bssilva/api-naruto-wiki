@@ -7,6 +7,7 @@ const favoriteClansController = new FavoriteClansController();
 const usersRouter = express.Router();
 
 usersRouter.post('/favorite-clans', authMiddleware, favoriteClansController.create);
+usersRouter.put('/favorite-clans/:id', authMiddleware, favoriteClansController.update);
 usersRouter.get('/favorite-clans/:id', authMiddleware, favoriteClansController.findOne);
 usersRouter.get('/favorite-clans', authMiddleware, favoriteClansController.list);
 

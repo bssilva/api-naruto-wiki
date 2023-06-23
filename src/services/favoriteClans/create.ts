@@ -3,11 +3,16 @@ import ClansRepository from "../../repository/clans-repository";
 import UserRepository from "../../repository/users-repository";
 import AppError from "../../shared/appError";
 
+interface IRequestPostFavoriteClan {
+  idClan: number,
+  idUser: number,
+}
+
 export default class CreateFavoriteClanService {
   async execute({
     idClan,
     idUser
-  }: any) {
+  }: IRequestPostFavoriteClan) {
     if (!idClan || !idUser)
       throw new AppError(
         "Necessário enviar todos os campos obrigatórios.",

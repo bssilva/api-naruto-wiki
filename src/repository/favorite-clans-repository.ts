@@ -34,6 +34,19 @@ class ClansRepository {
       throw new AppError("Este clan ja está nos seus favoritos", 409);
     }
   }
+
+  async update({id, idClan, idUser, name, link, icon}: IRequestFavoriteClan) : Promise<IResponseFavoriteClan>{
+    try{
+      const favoriteClan = await this.prisma.favoriteClans.update({
+        where: { id },
+        data: { idClan, idUser, name, link, icon }
+      });
+      return favoriteClan;
+
+    }catch(err){
+      throw new AppError("Este clan ja está nos seus favoritos", 409);
+    }
+  };
 }
 
 export default ClansRepository;
