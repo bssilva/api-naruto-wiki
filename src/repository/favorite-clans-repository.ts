@@ -6,8 +6,10 @@ import IResponseFavoriteClan from "../interfaces/favoriteClans/IResponseFavorite
 class ClansRepository {
   private prisma = new PrismaClient();
 
-  async list(): Promise<IResponseFavoriteClan[]> {
-    const favoriteClans = await this.prisma.favoriteClans.findMany();
+  async list(emailUser: string): Promise<IResponseFavoriteClan[]> {
+    const favoriteClans = await this.prisma.favoriteClans.findMany({
+      where: { emailUser }
+    });
     return favoriteClans;
   };
 
@@ -22,10 +24,10 @@ class ClansRepository {
     return favoriteClan;
   };
 
-  async create({idClan, idUser, name, link, icon} : IRequestFavoriteClan) : Promise<IResponseFavoriteClan> {
+  async create({idClan, emailUser} : IRequestFavoriteClan) : Promise<IResponseFavoriteClan> {
     try{
       const favoriteClan = await this.prisma.favoriteClans.create({
-        data: { idClan, idUser, name, link, icon }
+        data: { idClan, emailUser }
       });
       
       return favoriteClan;
@@ -35,11 +37,11 @@ class ClansRepository {
     }
   }
 
-  async update({id, idClan, idUser, name, link, icon}: IRequestFavoriteClan) : Promise<IResponseFavoriteClan>{
+  async update({id, idClan, emailUser}: IRequestFavoriteClan) : Promise<IResponseFavoriteClan>{
     try{
       const favoriteClan = await this.prisma.favoriteClans.update({
         where: { id },
-        data: { idClan, idUser, name, link, icon }
+        data: { idClan, emailUser }
       });
       return favoriteClan;
 

@@ -1,9 +1,10 @@
 interface IResponseFavoriteClan {
+  id?: number;
   idClan: number;
-  idUser: number;
-  name: string;
-  link: string;
-  icon: string;
+  emailUser: string;
+  name?: string;
+  link?: string;
+  icon?: string;
 }
 
 export default IResponseFavoriteClan;

@@ -1,10 +1,7 @@
 interface IRequestFavoriteClans {
   id?: number;
   idClan: number;
-  idUser: number;
-  name: string;
-  link: string;
-  icon: string;
+  emailUser: string;
 }
 
 export default IRequestFavoriteClans;

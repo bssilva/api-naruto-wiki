@@ -39,11 +39,8 @@ model characters {
 model favoriteClans {
   id         Int    @id @default(autoincrement())
   idClan     Int    
-  idUser     Int
-  name       String
-  link       String
-  icon       String
+  emailUser  String
 
-  @@unique([idUser, idClan])
+  @@unique([emailUser, idClan])
 }
 
