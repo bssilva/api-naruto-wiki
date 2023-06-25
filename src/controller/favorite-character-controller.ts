@@ -4,6 +4,7 @@ import CreateFavoriteCharacterService from "../services/favoriteCharacters/creat
 import FindOneFavoriteCharacterService from "../services/favoriteCharacters/findOne";
 import ListFavoriteCharacterService from "../services/favoriteCharacters/list";
 import UpdateFavoriteCharacterService from "../services/favoriteCharacters/update";
+import DeleteFavoriteCharacterService from "../services/favoriteCharacters/delete";
 import { extractEmailFromToken } from "../utils/jwtUtils";
 
 class FavoriteCharacterController {
@@ -80,6 +81,29 @@ class FavoriteCharacterController {
         idCharacter,
       });
       return res.status(201).send({ body: favoriteCharacter });
+    } catch (err) {
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+    }
+  };
+
+  delete = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const { authorization } = req.headers;
+
+    const emailUser = authorization && extractEmailFromToken(authorization);
+
+    if (!emailUser)
+      return res.status(400).send({ message: "Email não encontrado" });
+
+    const deleteFavoriteCharacterService = new DeleteFavoriteCharacterService();
+
+    try {
+      const favoriteClan = await deleteFavoriteCharacterService.execute(Number(id), emailUser);
+      return res.status(200).send({ body: favoriteClan });
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;

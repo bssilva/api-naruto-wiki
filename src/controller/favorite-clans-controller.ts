@@ -4,6 +4,7 @@ import CreateFavoriteClanService from "../services/favoriteClans/create";
 import FindOneFavoriteClanService from "../services/favoriteClans/findOne";
 import ListFavoriteClanService from "../services/favoriteClans/list";
 import UpdateFavoriteClanService from "../services/favoriteClans/update";
+import DeleteFavoriteClanService from "../services/favoriteClans/delete";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { extractEmailFromToken } from "../utils/jwtUtils";
 
@@ -84,6 +85,29 @@ class FavoriteClansController {
         idClan,
       });
       return res.status(201).send({ body: favoriteClan });
+    } catch (err) {
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+    }
+  };
+
+  delete = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const { authorization } = req.headers;
+
+    const emailUser = authorization && extractEmailFromToken(authorization);
+
+    if (!emailUser)
+      return res.status(400).send({ message: "Email não encontrado" });
+
+    const deleteFavoriteClanService = new DeleteFavoriteClanService();
+
+    try {
+      const favoriteClan = await deleteFavoriteClanService.execute(Number(id), emailUser);
+      return res.status(200).send({ body: favoriteClan });
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;

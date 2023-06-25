@@ -50,6 +50,13 @@ class FavoriteCharactersRepository {
       throw new AppError("Este personagem ja está nos seus favoritos", 409);
     }
   };
+
+  async delete(id: number): Promise<IResponseFavoriteCharacters> {
+    const favoriteCharacter = await this.prisma.favoriteCharacters.delete({
+      where: { id },
+    });
+    return favoriteCharacter;
+  }
 }
 
 export default FavoriteCharactersRepository;

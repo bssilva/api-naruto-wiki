@@ -8,6 +8,7 @@ const usersRouter = express.Router();
 
 usersRouter.post('/favorite-character', authMiddleware, favoriteCharacterController.create);
 usersRouter.put('/favorite-character/:id', authMiddleware, favoriteCharacterController.update);
+usersRouter.delete('/favorite-character/:id', authMiddleware, favoriteCharacterController.delete);
 usersRouter.get('/favorite-character/:id', authMiddleware, favoriteCharacterController.findOne);
 usersRouter.get('/favorite-character', authMiddleware, favoriteCharacterController.list);
 
