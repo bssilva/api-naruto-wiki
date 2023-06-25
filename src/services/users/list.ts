@@ -14,6 +14,7 @@ export default class ListUserService {
         email: user.email,
         createdAt: user.createdAt,
         birth_date: user.birth_date,
+        role: user.role
       };
     });
 

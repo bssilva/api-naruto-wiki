@@ -1,6 +1,6 @@
 import express from 'express';
 import FavoriteCharacterController from "../controller/favorite-character-controller";
-import authMiddleware from '../middleware/auth';
+import { authMiddleware } from '../middleware/auth';
 
 const favoriteCharacterController = new FavoriteCharacterController();
 

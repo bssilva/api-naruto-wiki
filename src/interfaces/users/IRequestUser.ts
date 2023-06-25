@@ -6,5 +6,7 @@ interface IRequestUser {
     password: string;
     birth_date: Date;
     createdAt: Date;
+    role?: string;
+    authorization?: string
 }
 export default IRequestUser;

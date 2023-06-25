@@ -16,7 +16,8 @@ export default class FindOneUserService {
       avatar: user.avatar,
       email: user.email,
       createdAt: user.createdAt,
-      birth_date: user.birth_date
+      birth_date: user.birth_date,
+      role: user.role
     };
 
     return user;

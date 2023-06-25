@@ -2,7 +2,7 @@ import express from 'express';
 import ClansController from "../controller/clans-controller";
 import multer from "multer";
 import multerConfig from "../config/multer";
-import authMiddleware from '../middleware/auth';
+import { authMiddleware } from '../middleware/auth';
 
 const clansController = new ClansController();
 

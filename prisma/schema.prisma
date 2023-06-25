@@ -18,6 +18,7 @@ model users {
   password   String
   birth_date DateTime
   createdAt  DateTime
+  role       String
 }
 
 model clans {

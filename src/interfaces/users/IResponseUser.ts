@@ -6,6 +6,7 @@ interface IResponseUser {
     password: string;
     createdAt: Date;
     birth_date: Date;
+    role?: string;
 }
 
 export default IResponseUser;

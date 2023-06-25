@@ -3,9 +3,10 @@ import IRequestUser from "../../interfaces/users/IRequestUser";
 import AppError from "../../shared/appError";
 import S3Storage from "../../utils/S3Storage";
 import * as argon2 from "argon2";
+import { extractRoleFromToken, extractEmailFromToken } from "../../utils/jwtUtils";
 
 export default class UpdateUserService {
-  async execute({id, name, avatar, email, password, birth_date, createdAt}: IRequestUser) {
+  async execute({id, name, avatar, email, password, birth_date, createdAt, role, authorization}: IRequestUser) {
     if(!id || !name || !avatar || !email || !password || !birth_date || !id) 
       throw new AppError("Necessário enviar todos os campos obrigatórios.", 400);
     
@@ -17,14 +18,24 @@ export default class UpdateUserService {
     
     birth_date = new Date(birth_date);
     
-    const s3Storage = new S3Storage();
+    const getRole = authorization && extractRoleFromToken(authorization)
+
+    if(role && role === "Administrator" && getRole !== 'Administrator')
+      throw new AppError("Sem permissao para atualizar usuarios 'Admin'", 403);
+    
     const userRepository = new UserRepository();
+    const findUser = await userRepository.findOneById(id)
+
+    if(getRole == "User" && authorization){
+      const emailUser = extractEmailFromToken(authorization)
+      if(findUser.email !== emailUser)
+        throw new AppError("Sem permissao para atualizar outros usuarios", 403);
+    }
     
-    const findUser = await userRepository.findOneById(id);
-    
+    const s3Storage = new S3Storage();
     const urlImg = await s3Storage.saveFile(avatar, "avatar-user-api");
 
-    const user = await userRepository.update({id, name, avatar: urlImg, email, password, birth_date, createdAt});
+    const user = await userRepository.update({id, name, avatar: urlImg, email, password, birth_date, createdAt, role});
     
     // Deleta imagem antiga na S3
     const urlSaveImg = findUser.avatar.split('/')
@@ -37,7 +48,8 @@ export default class UpdateUserService {
       email: user.email,
       avatar: user.avatar,
       createdAt: user.createdAt,
-      birth_date: user.birth_date
+      birth_date: user.birth_date,
+      role: user.role
     };
 
     return response;

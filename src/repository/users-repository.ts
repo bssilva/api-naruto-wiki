@@ -32,12 +32,12 @@ class UserRepository {
     return user;
   };
   
-  async create({name, avatar, email, password, birth_date, createdAt}: IRequestUser) : Promise<IResponseUser>{
+  async create({name, avatar, email, password, birth_date, createdAt, role = "User"}: IRequestUser) : Promise<IResponseUser>{
     try {
       if(!avatar) throw new AppError("Avatar do usuário é obrigatório", 400);
       
       const user = await this.prisma.users.create({
-        data: { name, avatar, email, password, birth_date, createdAt }
+        data: { name, avatar, email, password, birth_date, createdAt, role }
       });
 
       return user;
@@ -49,12 +49,12 @@ class UserRepository {
     }
   };
 
-  async update({id, name, avatar, email, password, birth_date, createdAt}: IRequestUser) : Promise<IResponseUser>{
+  async update({id, name, avatar, email, password, birth_date, createdAt, role = "User"}: IRequestUser) : Promise<IResponseUser>{
     try{
 
       const user = await this.prisma.users.update({
         where: { id },
-        data: { name, avatar, email, password, birth_date, createdAt }
+        data: { name, avatar, email, password, birth_date, createdAt, role }
       });
       
       return user;

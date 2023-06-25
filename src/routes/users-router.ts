@@ -2,7 +2,7 @@ import express from 'express';
 import UserController from "../controller/users-controller";
 import multer from "multer"; 
 import multerConfig from "../config/multer";
-import authMiddleware from '../middleware/auth';
+import { authMiddleware, checkUserRole} from '../middleware/auth';
 
 const usersController = new UserController();
 

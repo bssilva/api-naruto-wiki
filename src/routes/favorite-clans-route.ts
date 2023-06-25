@@ -1,6 +1,6 @@
 import express from 'express';
 import FavoriteClansController from "../controller/favorite-clans-controller";
-import authMiddleware from '../middleware/auth';
+import { authMiddleware } from '../middleware/auth';
 
 const favoriteClansController = new FavoriteClansController();
 

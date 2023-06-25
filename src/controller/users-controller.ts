@@ -39,12 +39,13 @@ class UserController{
 
   create = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const { name, email, password, birth_date, createdAt } = req.body;
+      const { name, email, password, birth_date, createdAt, role } = req.body;
       const avatar = req.file?.filename;
+      const { authorization } = req.headers;
 
       const createUserService = new CreateUserService();
 
-      const user = await createUserService.execute({ name, avatar, email, password, createdAt, birth_date });
+      const user = await createUserService.execute({ name, avatar, email, password, createdAt, birth_date, role, authorization });
       
       return res.status(201).send({ body: user });
     
@@ -61,12 +62,13 @@ class UserController{
 
   update = async (req: Request, res: Response) : Promise<Response> => {
     try {
-      const { name, email, password, birth_date, createdAt } = req.body;
+      const { name, email, password, birth_date, createdAt, role } = req.body;
       const { id } = req.params
+      const { authorization } = req.headers;
       const avatar = req.file?.filename;
       
       const updateUserService = new UpdateUserService()
-      const user = await updateUserService.execute({ id: Number(id), name, avatar, email, password, createdAt, birth_date });
+      const user = await updateUserService.execute({ id: Number(id), name, avatar, email, password, createdAt, birth_date, role, authorization });
 
       return res.status(200).send({ body: user });
 
