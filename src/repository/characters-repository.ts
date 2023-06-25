@@ -66,8 +66,6 @@ class CharactersRepository {
           ],
         },
       });
-
-      if (!characters.length) throw new AppError("Personagem não encontrado.", 404);
     }
 
     return characters;

@@ -13,26 +13,11 @@ export default class FindOneClanService{
         const clan = await clansRepository.findOne(newId);
 
         const filterOptions: any = {};
+        filterOptions.clan = clan.name
+
         const charactersRepository = new CharacterRepository();
-        const characters = await charactersRepository.list(filterOptions)
+        const characters = await charactersRepository.list({filterOptions})
 
-        let response = [];
-        
-        // for(const character of characters){
-        //     const infoJson = character.info && JSON.parse(character.info.toString());
-        //     character.info = infoJson;
-
-        //     if(!infoJson["Clã"]) return
-
-        //     let nameCla = infoJson.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Remover acento
-            
-        //     if(nameCla === clan.name){
-        //         response.push()
-        //     }
-
-        // }
-        // if(clan)
-        
-        return clan;
+        return {clan, characters};
     }
 }

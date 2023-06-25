@@ -27,12 +27,11 @@ export default class UpdateCharacterService {
       id,
       name,
       about,
-      info,
+      info: JSON.parse(info),
       page,
       images: urlImages,
     });
-    const infoJson = character.info && JSON.parse(character.info.toString());
-    character.info = infoJson;
+
     character.about = JSON.parse(character.about[0]);
 
     // Deleta imagem antiga na S3
