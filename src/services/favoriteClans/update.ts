@@ -5,7 +5,7 @@ import IRequestFavoriteClan from "../../interfaces/favoriteClans/IRequestFavorit
 
 export default class UpdateClanService {
   async execute({ id, emailUser, idClan }: IRequestFavoriteClan) {
-    if (!id || !emailUser || !emailUser)
+    if (!id || !emailUser || !idClan)
       throw new AppError(
         "Necessário enviar todos os campos obrigatórios.",
         400

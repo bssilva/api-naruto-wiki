@@ -44,3 +44,11 @@ model favoriteClans {
   @@unique([emailUser, idClan])
 }
 
+model favoriteCharacters {
+  id          Int    @id @default(autoincrement())
+  idCharacter Int    
+  emailUser   String
+
+  @@unique([emailUser, idCharacter])
+}
+

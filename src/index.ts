@@ -3,10 +3,11 @@ import cors from "cors";
 import usersRouter from "./routes/users-router";
 import clansRouter from "./routes/clans-route";
 import favoriteClansRouter from "./routes/favorite-clans-route";
+import favoriteCharacterRouter from "./routes/favorite-character-route";
 import characterRouter from "./routes/character-route";
 import rateLimit from "express-rate-limit";
 
-const PORT = process.env.PORT || 4001;
+const PORT = process.env.PORT || 4004;
 const HOSTNAME = process.env.HOSTNAME || "http://localhost";
 
 const app = express();
@@ -26,6 +27,7 @@ app.use("/api", usersRouter);
 app.use("/api", clansRouter);
 app.use("/api", characterRouter);
 app.use("/api", favoriteClansRouter);
+app.use("/api", favoriteCharacterRouter);
 
 app.use(
   cors({
