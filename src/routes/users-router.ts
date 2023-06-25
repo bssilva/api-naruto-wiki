@@ -12,7 +12,7 @@ const uploadImage = multer(multerConfig);
 
 usersRouter.get('/users', authMiddleware, usersController.list);
 usersRouter.get('/users/:id', authMiddleware, usersController.findOne);
-usersRouter.post('/users', authMiddleware, uploadImage.single('avatar'), usersController.create);
+usersRouter.post('/users', uploadImage.single('avatar'), usersController.create);
 usersRouter.post('/users/login', usersController.login);
 usersRouter.put('/users/:id', authMiddleware, uploadImage.single('avatar'), usersController.update);
 

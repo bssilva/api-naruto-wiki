@@ -26,7 +26,7 @@ export default class CreateFavoriteCharacterService {
     const response = {
       id: favoriteCharacter.id,
       emailUser: favoriteCharacter.emailUser,
-      idClan: favoriteCharacter.idCharacter,
+      idCharacter: favoriteCharacter.idCharacter,
       name: character.name,
       about: character.about,
       info: character.info,
