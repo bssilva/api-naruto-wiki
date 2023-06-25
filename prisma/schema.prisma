@@ -30,7 +30,7 @@ model clans {
 model characters {
   id         Int    @id @default(autoincrement())
   about      String[]
-  info       Json
+  info       Json?
   page       String
   name       String @unique
   images     String[]

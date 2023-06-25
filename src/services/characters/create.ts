@@ -24,14 +24,12 @@ export default class CreateCharacterService {
     let character = await characterRepository.create({
       name,
       about,
-      info,
+      info: JSON.parse(info),
       page,
       images: urlImages,
     });
 
-    character.info = JSON.parse(character.info)
     character.about = JSON.parse(character.about[0])
-
     return character;
   }
 }

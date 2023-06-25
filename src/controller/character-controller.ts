@@ -8,10 +8,28 @@ import UpdateCharacterSerice from "../services/characters/update";
 class ClansController {
   list = async (req: Request, res: Response): Promise<Response> => {
     const listCharacterService = new ListCharacterService();
+    const estado = req.query.estado?.toString();
+    const sexo = req.query.sexo?.toString();
+    const classificacao = req.query.classificacao?.toString();
+    const nome = req.query.nome?.toString();
+    const cla = req.query.cla?.toString();
 
-    const character = await listCharacterService.execute();
-
-    return res.status(200).send({ body: character });
+    try {
+      const character = await listCharacterService.execute({
+        estado,
+        sexo,
+        classificacao,
+        nome,
+        cla,
+      });
+      return res.status(200).send({ body: character });
+    } catch (err) {
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+    }
   };
 
   findOne = async (req: Request, res: Response): Promise<Response> => {
@@ -34,17 +52,26 @@ class ClansController {
   create = async (req: Request, res: Response): Promise<Response> => {
     const { name, about, info, page } = req.body;
 
-    const { images } = (req.files as { [fieldname: string]: Express.Multer.File[] })
-    
-    const nameImages = images.map(image => { return image.originalname })
+    const { images } = req.files as {
+      [fieldname: string]: Express.Multer.File[];
+    };
 
-    const createCharacterService = new CreateCharacterService()
+    const nameImages = images.map((image) => {
+      return image.originalname;
+    });
 
-    try{
-      const character = await createCharacterService.execute({ name, about, info, page, images: nameImages })
+    const createCharacterService = new CreateCharacterService();
+
+    try {
+      const character = await createCharacterService.execute({
+        name,
+        about,
+        info,
+        page,
+        images: nameImages,
+      });
       return res.status(201).send({ body: character });
-
-    }catch(err){
+    } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
         return res.status(statusCode).send({ body: err });
@@ -53,29 +80,37 @@ class ClansController {
     }
   };
 
-  update = async (req: Request, res: Response) : Promise<Response> => {
+  update = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const { id } = req.params
+      const { id } = req.params;
       const { name, about, info, page } = req.body;
-      const { images } = (req.files as { [fieldname: string]: Express.Multer.File[] })
-      
-      const nameImages = images.map(image => { return image.originalname })
-      
-      const updateCharacterService = new UpdateCharacterSerice()
-      const character = await updateCharacterService.execute({ id: Number(id), name, about, info, page, images: nameImages });
+      const { images } = req.files as {
+        [fieldname: string]: Express.Multer.File[];
+      };
+
+      const nameImages = images.map((image) => {
+        return image.originalname;
+      });
+
+      const updateCharacterService = new UpdateCharacterSerice();
+      const character = await updateCharacterService.execute({
+        id: Number(id),
+        name,
+        about,
+        info,
+        page,
+        images: nameImages,
+      });
 
       return res.status(200).send({ body: character });
-
     } catch (err) {
-
       if (err instanceof AppError) {
         const { statusCode } = err;
         return res.status(statusCode).send({ body: err });
       }
       return res.status(400).send({ body: err });
-      
     }
-  }
+  };
 }
 
 export default ClansController;
