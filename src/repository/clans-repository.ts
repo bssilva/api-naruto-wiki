@@ -66,6 +66,13 @@ class ClansRepository {
       throw new AppError("Nome de clan ja existente.", 409);
     }
   };
+
+  async delete(id: number): Promise<IResponseClan> {
+    const clan = await this.prisma.clans.delete({
+      where: { id },
+    });
+    return clan;
+  }
 }
 
 export default ClansRepository;

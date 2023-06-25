@@ -129,6 +129,13 @@ class CharactersRepository {
       throw new AppError("Nome de clan ja existente.", 409);
     }
   }
+
+  async delete(id: number): Promise<IResponseCharacter> {
+    const character = await this.prisma.characters.delete({
+      where: { id },
+    });
+    return character;
+  }
 }
 
 export default CharactersRepository;

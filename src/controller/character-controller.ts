@@ -4,6 +4,7 @@ import ListCharacterService from "../services/characters/list";
 import FindOneCharacterService from "../services/characters/findOne";
 import CreateCharacterService from "../services/characters/create";
 import UpdateCharacterSerice from "../services/characters/update";
+import DeleteCharacterSerice from "../services/characters/delete";
 
 class ClansController {
   list = async (req: Request, res: Response): Promise<Response> => {
@@ -103,6 +104,22 @@ class ClansController {
       });
 
       return res.status(200).send({ body: character });
+    } catch (err) {
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+    }
+  };
+
+  delete = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+
+    const deleteCharacterSerice = new DeleteCharacterSerice();
+    try {
+      const deleteCharacter = await deleteCharacterSerice.execute(Number(id));
+      return res.status(200).send({ body: deleteCharacter });
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;

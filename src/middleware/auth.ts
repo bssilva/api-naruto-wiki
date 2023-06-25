@@ -35,6 +35,7 @@ const checkUserRole = (requiredRole: string) => {
         return res.status(403).json({ error: "Acesso negado" });
       }
       
+      next()
     } catch (error) {
       return res.status(401).json({ error: "Falha na autenticação" });
     }

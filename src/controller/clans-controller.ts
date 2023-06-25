@@ -4,6 +4,7 @@ import ListClanService from "../services/clans/list";
 import FindOneClanService from "../services/clans/findOne";
 import CreateClanService from "../services/clans/create";
 import UpdateClanService from "../services/clans/update";
+import DeleteClanService from "../services/clans/delete";
 
 class ClansController {
   list = async (req: Request, res: Response): Promise<Response> => {
@@ -73,6 +74,22 @@ class ClansController {
       
     }
   }
+
+  delete = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+
+    const deleteClanService = new DeleteClanService();
+    try {
+      const deleteClan = await deleteClanService.execute(Number(id));
+      return res.status(200).send({ body: deleteClan });
+    } catch (err) {
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+    }
+  };
 }
 
 export default ClansController;

@@ -65,6 +65,13 @@ class UserRepository {
       throw new AppError("Email ja existente", 409);
     }
   };
+
+  async delete(id: number): Promise<IResponseUser> {
+    const user = await this.prisma.users.delete({
+      where: { id },
+    });
+    return user;
+  }
 }
 
 export default UserRepository;

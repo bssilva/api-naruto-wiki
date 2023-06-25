@@ -5,6 +5,7 @@ import ListUserService from "../services/users/list";
 import CreateUserService from "../services/users/create";
 import UpdateUserService from "../services/users/update";
 import LoginUserService from "../services/users/login";
+import DeleteUserService from "../services/users/delete";
 
 class UserController{
   list = async (req: Request, res: Response): Promise<Response> => {
@@ -98,10 +99,23 @@ class UserController{
       }
       return res.status(400).send({ body: err });
     }
-
-
-
   }
+
+  delete = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+
+    const deleteUserService = new DeleteUserService();
+    try {
+      const deleteClan = await deleteUserService.execute(Number(id));
+      return res.status(200).send({ body: deleteClan });
+    } catch (err) {
+      if (err instanceof AppError) {
+        const { statusCode } = err;
+        return res.status(statusCode).send({ body: err });
+      }
+      return res.status(400).send({ body: err });
+    }
+  };
 }
 
 export default UserController;
