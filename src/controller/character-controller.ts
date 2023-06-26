@@ -23,13 +23,13 @@ class ClansController {
         nome,
         cla,
       });
-      return res.status(200).send({ body: character });
+      return res.status(200).send(character);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -40,13 +40,13 @@ class ClansController {
 
     try {
       const character = await findOneCharacterService.execute(id);
-      return res.status(200).send({ body: character });
+      return res.status(200).send(character);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -71,13 +71,13 @@ class ClansController {
         page,
         images: nameImages,
       });
-      return res.status(201).send({ body: character });
+      return res.status(201).send(character);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -103,13 +103,13 @@ class ClansController {
         images: nameImages,
       });
 
-      return res.status(200).send({ body: character });
+      return res.status(200).send(character);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -119,13 +119,13 @@ class ClansController {
     const deleteCharacterSerice = new DeleteCharacterSerice();
     try {
       const deleteCharacter = await deleteCharacterSerice.execute(Number(id));
-      return res.status(200).send({ body: deleteCharacter });
+      return res.status(200).send(deleteCharacter);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 }

@@ -13,9 +13,7 @@ class UserController{
 
     const users = await listUserService.execute();
 
-    return res.status(200).send({
-      body: { users },
-    });
+    return res.status(200).send(users);
   }; 
  
   findOne = async (req: Request, res: Response): Promise<Response> => {
@@ -25,15 +23,15 @@ class UserController{
 
     try {
       const user = await findOneUserService.execute(id);
-      return res.status(200).send({ body: user });
+      return res.status(200).send(user);
     
     } catch (err) {
     
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     
     }
   };
@@ -48,15 +46,15 @@ class UserController{
 
       const user = await createUserService.execute({ name, avatar, email, password, createdAt, birth_date, role, authorization });
       
-      return res.status(201).send({ body: user });
+      return res.status(201).send(user);
     
     } catch (err) {
     
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     
     }
   };
@@ -71,15 +69,15 @@ class UserController{
       const updateUserService = new UpdateUserService()
       const user = await updateUserService.execute({ id: Number(id), name, avatar, email, password, createdAt, birth_date, role, authorization });
 
-      return res.status(200).send({ body: user });
+      return res.status(200).send(user);
 
     } catch (err) {
 
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
       
     }
   }
@@ -91,13 +89,13 @@ class UserController{
     
     try{
       const token = await loginUserService.execute(email, password)
-      return res.status(200).send({ body: { token } });
+      return res.status(200).send(token);
     }catch(err){
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   }
 
@@ -107,13 +105,13 @@ class UserController{
     const deleteUserService = new DeleteUserService();
     try {
       const deleteClan = await deleteUserService.execute(Number(id));
-      return res.status(200).send({ body: deleteClan });
+      return res.status(200).send(deleteClan);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 }

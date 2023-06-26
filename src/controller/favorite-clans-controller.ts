@@ -20,7 +20,7 @@ class FavoriteClansController {
       return res.status(400).send({ error: "Email não encontrado" });
 
     const listFavortieClan = await listFavortieClanService.execute(emailUser);
-    return res.status(200).send({ body: listFavortieClan });
+    return res.status(200).send(listFavortieClan);
   };
 
   create = async (req: Request, res: Response): Promise<Response> => {
@@ -39,13 +39,13 @@ class FavoriteClansController {
         emailUser,
         idClan,
       });
-      return res.status(201).send({ body: favoriteClan });
+      return res.status(201).send(favoriteClan);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -56,13 +56,13 @@ class FavoriteClansController {
 
     try {
       const favoriteClan = await findOneFavoriteClanService.execute(id);
-      return res.status(200).send({ body: favoriteClan });
+      return res.status(200).send(favoriteClan);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -84,13 +84,13 @@ class FavoriteClansController {
         emailUser,
         idClan,
       });
-      return res.status(201).send({ body: favoriteClan });
+      return res.status(201).send(favoriteClan);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -107,13 +107,13 @@ class FavoriteClansController {
 
     try {
       const favoriteClan = await deleteFavoriteClanService.execute(Number(id), emailUser);
-      return res.status(200).send({ body: favoriteClan });
+      return res.status(200).send(favoriteClan);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 }

@@ -12,7 +12,7 @@ class ClansController {
 
     const clans = await listClanService.execute();
 
-    return res.status(200).send({ body: clans });
+    return res.status(200).send(clans);
   };
 
   findOne = async (req: Request, res: Response): Promise<Response> => {
@@ -22,14 +22,14 @@ class ClansController {
 
     try {
       const clan = await findOneClanService.execute(id);
-      return res.status(200).send({ body: clan });
+      return res.status(200).send(clan);
 
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -41,14 +41,14 @@ class ClansController {
     
     try{
       const clan = await createClanService.execute({ name, link, icon })
-      return res.status(201).send({ body: clan });
+      return res.status(201).send(clan);
 
     }catch(err){
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   
   };
@@ -62,15 +62,15 @@ class ClansController {
 
     try{
       const clan = await updateClanService.execute({id: Number(id), name, link, icon});
-      return res.status(201).send({ body: clan });
+      return res.status(201).send(clan);
       
     }catch (err) {
 
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
       
     }
   }
@@ -81,13 +81,13 @@ class ClansController {
     const deleteClanService = new DeleteClanService();
     try {
       const deleteClan = await deleteClanService.execute(Number(id));
-      return res.status(200).send({ body: deleteClan });
+      return res.status(200).send(deleteClan);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 }

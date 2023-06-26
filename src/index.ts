@@ -7,7 +7,7 @@ import favoriteCharacterRouter from "./routes/favorite-character-route";
 import characterRouter from "./routes/character-route";
 import rateLimit from "express-rate-limit";
 
-const PORT = process.env.PORT || 4004;
+const PORT = process.env.PORT || 4005;
 const HOSTNAME = process.env.HOSTNAME || "http://localhost";
 
 const app = express();

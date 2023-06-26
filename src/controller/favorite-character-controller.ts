@@ -19,7 +19,7 @@ class FavoriteCharacterController {
       return res.status(400).send({ error: "Email não encontrado" });
 
     const listFavoriteCharacter = await listFavoriteCharacterService.execute(emailUser);
-    return res.status(200).send({ body: listFavoriteCharacter });
+    return res.status(200).send(listFavoriteCharacter);
   };
 
   create = async (req: Request, res: Response): Promise<Response> => {
@@ -35,11 +35,11 @@ class FavoriteCharacterController {
 
     try {
       const favoriteCharacter = await createFavoriteCharacterService.execute({ emailUser, idCharacter });
-      return res.status(201).send({ body: favoriteCharacter });
+      return res.status(201).send(favoriteCharacter);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
       return res.status(400).send({ body: err });
     }
@@ -52,13 +52,13 @@ class FavoriteCharacterController {
 
     try {
       const favoriteCharacter = await findOneFavoriteCharacterService.execute(id);
-      return res.status(200).send({ body: favoriteCharacter });
+      return res.status(200).send(favoriteCharacter);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -80,13 +80,13 @@ class FavoriteCharacterController {
         emailUser,
         idCharacter,
       });
-      return res.status(201).send({ body: favoriteCharacter });
+      return res.status(201).send(favoriteCharacter);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 
@@ -103,13 +103,13 @@ class FavoriteCharacterController {
 
     try {
       const favoriteClan = await deleteFavoriteCharacterService.execute(Number(id), emailUser);
-      return res.status(200).send({ body: favoriteClan });
+      return res.status(200).send(favoriteClan);
     } catch (err) {
       if (err instanceof AppError) {
         const { statusCode } = err;
-        return res.status(statusCode).send({ body: err });
+        return res.status(statusCode).send(err);
       }
-      return res.status(400).send({ body: err });
+      return res.status(400).send(err);
     }
   };
 }
