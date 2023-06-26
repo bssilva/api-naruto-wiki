@@ -39,7 +39,7 @@ class UserController{
   create = async (req: Request, res: Response): Promise<Response> => {
     try {
       const { name, email, password, birth_date, createdAt, role } = req.body;
-      const avatar = req.file?.filename;
+      const avatar = req.file?.filename || req.body.avatar;
       const { authorization } = req.headers;
 
       const createUserService = new CreateUserService();

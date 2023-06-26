@@ -4,7 +4,9 @@ import AppError from "../../shared/appError";
 import S3Storage from "../../utils/S3Storage";
 import * as argon2 from "argon2";;
 import { extractRoleFromToken } from "../../utils/jwtUtils";
-
+import { resolve } from "path";
+import axios from "axios";
+import fs from "fs";
 export default class CreateUserService{
     async execute({name, avatar, email, password, birth_date, createdAt, role, authorization}: IRequestUser) {
         if(!name || !avatar || !email || !password || !birth_date) 
@@ -16,6 +18,18 @@ export default class CreateUserService{
         
         birth_date = new Date(birth_date);
         
+        if(avatar.includes("https://")){
+            const splitFilename = avatar.split("/")
+            const filename = splitFilename[splitFilename.length - 1]
+
+            const tempFolder = resolve(__dirname, "..", "..", "temp", filename);
+
+            const response = await axios.get(avatar, { responseType: 'stream' });
+            await response.data.pipe(fs.createWriteStream(tempFolder));
+
+            avatar = filename;
+        }
+
         if(role && role === "Administrator"){
             const getRole = authorization && extractRoleFromToken(authorization)
             if(getRole !== 'Administrator') throw new AppError("Sem permissao para criar usuarios 'Admin'", 401);
