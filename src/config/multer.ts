@@ -9,6 +9,8 @@ export default {
     storage: multer.diskStorage({
         destination: tempFolder,
         filename(request, file, callback){
+            if(file.originalname.includes("https://")) return
+
             const fileHash = randomBytes(10).toString('hex')
             
             const filename = `${fileHash}-${file.originalname}`
