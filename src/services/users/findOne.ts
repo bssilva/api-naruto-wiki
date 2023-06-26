@@ -20,6 +20,6 @@ export default class FindOneUserService {
       role: user.role
     };
 
-    return user;
+    return response;
   }
 }
