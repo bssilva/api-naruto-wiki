@@ -89,7 +89,7 @@ class UserController{
     
     try{
       const token = await loginUserService.execute(email, password)
-      return res.status(200).send(token);
+      return res.status(200).send({token});
     }catch(err){
       if (err instanceof AppError) {
         const { statusCode } = err;
