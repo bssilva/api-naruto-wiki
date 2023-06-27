@@ -35,7 +35,7 @@ class ClansController {
 
   create = async (req: Request, res: Response): Promise<Response> => {
     const { name, link } = req.body;
-    const icon = req.file?.filename;
+    const icon = req.file?.filename || req.body.icon;
 
     const createClanService = new CreateClanService()
     
@@ -56,7 +56,7 @@ class ClansController {
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     const { name, link } = req.body;
-    const icon = req.file?.filename;
+    const icon = req.file?.filename || req.body.icon;
 
     const updateClanService = new UpdateClanService();
 

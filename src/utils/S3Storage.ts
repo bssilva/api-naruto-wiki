@@ -29,7 +29,7 @@ class S3Storage {
   }
 
   async saveFile(filename: string, folderBucket: string): Promise<string> {
-    const acceptableImageFormat = ['jpeg', 'jpg', 'png'];
+    const acceptableImageFormat = ['jpeg', 'jpg', 'png', 'svg'];
 
     if(!acceptableImageFormat.some(format => filename.toLowerCase().includes(format)))
       throw new AppError("Formato de imagem inválido. Formatos válidos 'jpg', 'jpeg', 'png'", 409);
