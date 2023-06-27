@@ -64,7 +64,7 @@ class UserController{
       const { name, email, password, birth_date, createdAt, role } = req.body;
       const { id } = req.params
       const { authorization } = req.headers;
-      const avatar = req.file?.filename;
+      const avatar = req.file?.filename || req.body.avatar;
       
       const updateUserService = new UpdateUserService()
       const user = await updateUserService.execute({ id: Number(id), name, avatar, email, password, createdAt, birth_date, role, authorization });

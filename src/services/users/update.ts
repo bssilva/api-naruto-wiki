@@ -4,7 +4,9 @@ import AppError from "../../shared/appError";
 import S3Storage from "../../utils/S3Storage";
 import * as argon2 from "argon2";
 import { extractRoleFromToken, extractEmailFromToken } from "../../utils/jwtUtils";
-
+import { resolve } from "path";
+import axios from "axios";
+import fs from "fs";
 export default class UpdateUserService {
   async execute({id, name, avatar, email, password, birth_date, createdAt, role, authorization}: IRequestUser) {
     if(!id || !name || !avatar || !email || !password || !birth_date || !id) 
@@ -18,6 +20,18 @@ export default class UpdateUserService {
     
     birth_date = new Date(birth_date);
     
+    if(avatar.includes("https://")){
+        const splitFilename = avatar.split("/")
+        const filename = splitFilename[splitFilename.length - 1]
+
+        const tempFolder = resolve(__dirname, "..", "..", "temp", filename);
+
+        const response = await axios.get(avatar, { responseType: 'stream' });
+        await response.data.pipe(fs.createWriteStream(tempFolder));
+
+        avatar = filename;
+    }
+
     const getRole = authorization && extractRoleFromToken(authorization)
 
     if(role && role === "Administrator" && getRole !== 'Administrator')
