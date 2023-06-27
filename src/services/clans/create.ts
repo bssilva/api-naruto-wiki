@@ -14,7 +14,7 @@ export default class CreateClanService {
         400
       );
     
-    if(icon.includes("https://")){
+    if(icon.includes("https://") || icon.includes("http://")){
         const splitFilename = icon.split("/")
         const [ filename, ] = splitFilename.filter((name) => name.includes('.svg'))
 
