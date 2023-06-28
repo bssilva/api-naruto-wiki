@@ -2,7 +2,9 @@ import CharacterRepository from "../../repository/characters-repository";
 import IRequestCharacter from "../../interfaces/characters/IRequestCharacter";
 import AppError from "../../shared/appError";
 import S3Storage from "../../utils/S3Storage";
-
+import { resolve } from "path";
+import axios from "axios";
+import fs from "fs";
 export default class UpdateCharacterService {
   async execute({ id, name, about, info, page, images }: IRequestCharacter) {
     if (!id || !name || !about || !info || !page || !images)
@@ -17,9 +19,34 @@ export default class UpdateCharacterService {
     const findCharacter = await characterRepository.findOne(id);
 
     let urlImages = [];
+    let filename;
 
-    for (const image of images) {
-      const url = await s3Storage.saveFile(image, "images-characters");
+    for(const image of images){
+      filename = image;
+      if (image.includes("https://") || image.includes("http://")) {
+        const splitFilename = image.split("/");
+
+        const name = splitFilename[splitFilename.length - 1];
+
+        filename = name.includes(".webp")
+          ? name.replace(".webp", ".png")
+          : name;
+          
+        const tempFolder = resolve(__dirname, "..", "..", "temp", filename);
+
+        const response = await axios.get(image, { responseType: "stream" });
+
+        const writeStream = response.data.pipe(
+          fs.createWriteStream(tempFolder)
+        );
+
+        await new Promise((resolve, reject) => {
+          writeStream.on("finish", resolve);
+          writeStream.on("error", reject);
+        });
+      }
+
+      const url = await s3Storage.saveFile(filename, "images-characters");
       urlImages.push(url);
     }
 
@@ -27,12 +54,12 @@ export default class UpdateCharacterService {
       id,
       name,
       about,
-      info: JSON.parse(info),
+      info: typeof info === "string" ? JSON.parse(info) : info,
       page,
       images: urlImages,
     });
 
-    character.about = JSON.parse(character.about[0]);
+    character.about = character.about.length === 1 ? JSON.parse(character.about[0]) : character.about;
 
     // Deleta imagem antiga na S3
     for (const image of findCharacter.images) {

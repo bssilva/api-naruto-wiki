@@ -13,7 +13,7 @@ const uploadImage = multer(multerConfig);
 charactersRouter.get('/characters', authMiddleware, characterController.list);
 charactersRouter.get('/characters/:id', authMiddleware, characterController.findOne);
 charactersRouter.delete('/characters/:id', authMiddleware, checkUserRole('Administrator'), characterController.delete);
-charactersRouter.post('/characters', authMiddleware, uploadImage.fields([{ name: 'images', maxCount: 2}]), characterController.create);
-charactersRouter.put('/characters/:id', authMiddleware, uploadImage.fields([{ name: 'images', maxCount: 2}]), characterController.update);
+charactersRouter.post('/characters', authMiddleware, uploadImage.fields([{ name: 'images', maxCount: 3}]), characterController.create);
+charactersRouter.put('/characters/:id', authMiddleware, uploadImage.fields([{ name: 'images', maxCount: 3}]), characterController.update);
 
 export default charactersRouter;

@@ -53,13 +53,16 @@ class ClansController {
   create = async (req: Request, res: Response): Promise<Response> => {
     const { name, about, info, page } = req.body;
 
-    const { images } = req.files as {
-      [fieldname: string]: Express.Multer.File[];
-    };
+    let nameImages;
 
-    const nameImages = images.map((image) => {
-      return image.originalname;
-    });
+    if(!req.body.images){
+      const { images } = req.files as { [fieldname: string]: Express.Multer.File[]; } || req.body;
+
+      nameImages = images.map((image) => {
+        return image.originalname;
+      });
+    }
+    else nameImages = req.body.images
 
     const createCharacterService = new CreateCharacterService();
 
@@ -73,6 +76,7 @@ class ClansController {
       });
       return res.status(201).send(character);
     } catch (err) {
+      console.log({err})
       if (err instanceof AppError) {
         const { statusCode } = err;
         return res.status(statusCode).send(err);
@@ -85,13 +89,17 @@ class ClansController {
     try {
       const { id } = req.params;
       const { name, about, info, page } = req.body;
-      const { images } = req.files as {
-        [fieldname: string]: Express.Multer.File[];
-      };
+     
+      let nameImages;
 
-      const nameImages = images.map((image) => {
-        return image.originalname;
-      });
+      if(!req.body.images){
+        const { images } = req.files as { [fieldname: string]: Express.Multer.File[]; } || req.body;
+  
+        nameImages = images.map((image) => {
+          return image.originalname;
+        });
+      }
+      else nameImages = req.body.images
 
       const updateCharacterService = new UpdateCharacterSerice();
       const character = await updateCharacterService.execute({
