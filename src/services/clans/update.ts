@@ -8,47 +8,53 @@ import fs from "fs";
 
 export default class UpdateClanService {
   async execute({ id, name, link, icon }: IRequestClan) {
-    if (!id || !name || !link || !icon)
+    if (!id || !name || !link)
       throw new AppError(
         "Necessário enviar todos os campos obrigatórios.",
         400
       );
 
-    if (icon.includes("https://") || icon.includes("http://")) {
-      const splitFilename = icon.split("/");
+    const s3Storage = new S3Storage();
 
-      let [name] = splitFilename.filter(
-        (file) =>
-          file.includes(".svg") ||
-          file.includes(".png") ||
-          file.includes(".jpg") ||
-          file.includes(".jpeg")
-      );
+    let urlImg;
+    if (icon) {
+      if (icon.includes("https://") || icon.includes("http://")) {
+        const splitFilename = icon.split("/");
 
-      const filename = name.includes(".svg")
-        ? name.replace(".svg", ".png")
-        : name;
+        let [name] = splitFilename.filter(
+          (file) =>
+            file.includes(".svg") ||
+            file.includes(".png") ||
+            file.includes(".jpg") ||
+            file.includes(".jpeg")
+        );
 
-      console.log(filename);
+        const filename = name.includes(".svg")
+          ? name.replace(".svg", ".png")
+          : name;
 
-      const tempFolder = resolve(__dirname, "..", "..", "temp", filename);
+        console.log(filename);
 
-      const response = await axios.get(icon, { responseType: "stream" });
-      const writeStream = response.data.pipe(fs.createWriteStream(tempFolder));
-      await new Promise((resolve, reject) => {
-        writeStream.on("finish", resolve);
-        writeStream.on("error", reject);
-      });
+        const tempFolder = resolve(__dirname, "..", "..", "temp", filename);
 
-      icon = filename;
+        const response = await axios.get(icon, { responseType: "stream" });
+        const writeStream = response.data.pipe(
+          fs.createWriteStream(tempFolder)
+        );
+        await new Promise((resolve, reject) => {
+          writeStream.on("finish", resolve);
+          writeStream.on("error", reject);
+        });
+
+        icon = filename;
+      }
+
+      urlImg = await s3Storage.saveFile(icon, "icon-clan");
     }
 
-    const s3Storage = new S3Storage();
     const clansRepository = new ClansRepository();
 
     const findClan = await clansRepository.findOne(id);
-
-    const urlImg = await s3Storage.saveFile(icon, "icon-clan");
 
     const clan = await clansRepository.update({ id, name, link, icon: urlImg });
 

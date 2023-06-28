@@ -32,10 +32,8 @@ class ClansRepository {
     return clan;
   };
 
-  async create({ name, link, icon }: IRequestClan): Promise<IResponseClan> {
+  async create({ name, link, icon = "" }: IRequestClan): Promise<IResponseClan> {
     try{
-      if(!icon) throw new AppError("Icone do clan obrigatório", 400);
-
       const clan = await this.prisma.clans.create({
         data: { name, link, icon },
       });
@@ -51,7 +49,7 @@ class ClansRepository {
 
   };
 
-  async update({ id, name, link, icon }: IRequestClan) : Promise<IResponseClan>{
+  async update({ id, name, link, icon = "" }: IRequestClan) : Promise<IResponseClan>{
     try{
       const clan = await this.prisma.clans.update({
         where: { id },
