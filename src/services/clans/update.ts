@@ -33,8 +33,6 @@ export default class UpdateClanService {
           ? name.replace(".svg", ".png")
           : name;
 
-        console.log(filename);
-
         const tempFolder = resolve(__dirname, "..", "..", "temp", filename);
 
         const response = await axios.get(icon, { responseType: "stream" });
