@@ -15,8 +15,9 @@ export default class CreateClanService {
       );
     
     if(icon.includes("https://") || icon.includes("http://")){
-        const splitFilename = icon.split("/")
-        const [ filename, ] = splitFilename.filter((name) => name.includes('.svg'))
+        const splitFilename = icon.split("/");
+        let [ filename, ] = splitFilename.filter((name) => name.includes('.svg'));
+        filename = filename.includes(".svg") ? filename.replace(".svg", ".png") : filename;
 
         const tempFolder = resolve(__dirname, "..", "..", "temp", filename);
 
