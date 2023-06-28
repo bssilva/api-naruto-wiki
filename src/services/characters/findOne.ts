@@ -20,10 +20,8 @@ export default class FindOneCharacterService {
     character.about = JSON.parse(character.about[0]);
     
     if(infoJson['Clã']){
-      let nameCla = infoJson['Clã'].normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Remover acento
-      
       const clanRepository = new ClanRepository()
-      const clan = await clanRepository.findOneByName(nameCla)
+      const clan = await clanRepository.findOneByName(infoJson['Clã'])
 
       return { character, clan }
     }

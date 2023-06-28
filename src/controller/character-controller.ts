@@ -79,7 +79,6 @@ class ClansController {
       });
       return res.status(201).send(character);
     } catch (err) {
-      console.log({err})
       if (err instanceof AppError) {
         const { statusCode } = err;
         return res.status(statusCode).send(err);
