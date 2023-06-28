@@ -13,29 +13,39 @@ export default class CreateClanService {
         "Necessário enviar todos os campos obrigatórios.",
         400
       );
-    
-    if(icon.includes("https://") || icon.includes("http://")){
-        const splitFilename = icon.split("/");
-        let [ filename, ] = splitFilename.filter((name) => name.includes('.svg'));
-        filename = filename.includes(".svg") ? filename.replace(".svg", ".png") : filename;
 
-        const tempFolder = resolve(__dirname, "..", "..", "temp", filename);
+    if (icon.includes("https://") || icon.includes("http://")) {
+      const splitFilename = icon.split("/");
 
-        const response = await axios.get(icon, { responseType: 'stream' });
-        const writeStream = response.data.pipe(fs.createWriteStream(tempFolder));
-          await new Promise((resolve, reject) => {
-          writeStream.on("finish", resolve);
-          writeStream.on("error", reject);
-        });
-        
-        icon = filename;
+      let [name, ] = splitFilename.filter(
+        (file) =>
+          file.includes(".svg") ||
+          file.includes(".png") ||
+          file.includes(".jpg") ||
+          file.includes(".jpeg")
+      );
+
+      const filename = name.includes(".svg") ? name.replace(".svg", ".png") : name;
+
+      console.log(filename);
+
+      const tempFolder = resolve(__dirname, "..", "..", "temp", filename);
+
+      const response = await axios.get(icon, { responseType: "stream" });
+      const writeStream = response.data.pipe(fs.createWriteStream(tempFolder));
+      await new Promise((resolve, reject) => {
+        writeStream.on("finish", resolve);
+        writeStream.on("error", reject);
+      });
+
+      icon = filename;
     }
 
     const s3Storage = new S3Storage();
     const clansRepository = new ClansRepository();
 
     const urlImg = await s3Storage.saveFile(icon, "icon-clan");
-    
+
     const clan = await clansRepository.create({ name, link, icon: urlImg });
 
     return clan;
