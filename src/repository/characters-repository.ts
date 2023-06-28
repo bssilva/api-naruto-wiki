@@ -16,13 +16,19 @@ interface IQueryParamsCharacter {
 class CharactersRepository {
   private prisma = new PrismaClient();
 
-  async list({
-    filterOptions,
-  }: IQueryParamsCharacter): Promise<IResponseCharacter[]> {
+  async list(
+    { filterOptions }: IQueryParamsCharacter,
+    page: number,
+    limit: number
+  ): Promise<IResponseCharacter[]> {
     let characters;
 
-    if (!filterOptions) characters = await this.prisma.characters.findMany();
-    else {
+    if (!filterOptions) {
+      characters = await this.prisma.characters.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+    } else {
       characters = await this.prisma.characters.findMany({
         where: {
           AND: [
@@ -65,6 +71,8 @@ class CharactersRepository {
               : {},
           ],
         },
+        skip: (page - 1) * limit,
+        take: limit,
       });
     }
 

@@ -2,9 +2,9 @@ import FavoriteClanRepository from "../../repository/favorite-clans-repository";
 import ClansRepository from "../../repository/clans-repository";
 
 export default class ListFavoriteClanService {
-  async execute(emailUser: string) {
+  async execute(emailUser: string, page: number, limit: number) {
     const favoriteClanRepository = new FavoriteClanRepository();
-    const favoriteClan = await favoriteClanRepository.list(emailUser);
+    const favoriteClan = await favoriteClanRepository.list(emailUser, page, limit);
 
     const clansRepository = new ClansRepository();
     let responseFavoriteClan = []

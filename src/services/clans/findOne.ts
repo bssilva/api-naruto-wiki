@@ -16,7 +16,7 @@ export default class FindOneClanService{
         filterOptions.clan = clan.name
 
         const charactersRepository = new CharacterRepository();
-        const characters = await charactersRepository.list({filterOptions})
+        const characters = await charactersRepository.list({filterOptions}, 1, 100)
 
         return {clan, characters};
     }

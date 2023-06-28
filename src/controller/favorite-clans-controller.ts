@@ -5,11 +5,12 @@ import FindOneFavoriteClanService from "../services/favoriteClans/findOne";
 import ListFavoriteClanService from "../services/favoriteClans/list";
 import UpdateFavoriteClanService from "../services/favoriteClans/update";
 import DeleteFavoriteClanService from "../services/favoriteClans/delete";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import { extractEmailFromToken } from "../utils/jwtUtils";
 
 class FavoriteClansController {
   list = async (req: Request, res: Response): Promise<Response> => {
+    const { page = 1, limit = 10 } = req.query;
+   
     const { authorization } = req.headers;
 
     const emailUser = authorization && extractEmailFromToken(authorization);
@@ -19,7 +20,7 @@ class FavoriteClansController {
     if (!emailUser)
       return res.status(400).send({ error: "Email não encontrado" });
 
-    const listFavortieClan = await listFavortieClanService.execute(emailUser);
+    const listFavortieClan = await listFavortieClanService.execute(emailUser, Number(page), Number(limit));
     return res.status(200).send(listFavortieClan);
   };
 

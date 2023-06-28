@@ -14,6 +14,7 @@ class ClansController {
     const classificacao = req.query.classificacao?.toString();
     const nome = req.query.nome?.toString();
     const cla = req.query.cla?.toString();
+    const { page = 1, limit = 10 } = req.query;
 
     try {
       const character = await listCharacterService.execute({
@@ -22,6 +23,8 @@ class ClansController {
         classificacao,
         nome,
         cla,
+        page: Number(page), 
+        limit: Number(limit)
       });
       return res.status(200).send(character);
     } catch (err) {

@@ -9,6 +9,8 @@ import { extractEmailFromToken } from "../utils/jwtUtils";
 
 class FavoriteCharacterController {
   list = async (req: Request, res: Response): Promise<Response> => {
+    const { page = 1, limit = 10 } = req.query;
+  
     const { authorization } = req.headers;
 
     const emailUser = authorization && extractEmailFromToken(authorization);
@@ -18,7 +20,7 @@ class FavoriteCharacterController {
     if (!emailUser)
       return res.status(400).send({ error: "Email não encontrado" });
 
-    const listFavoriteCharacter = await listFavoriteCharacterService.execute(emailUser);
+    const listFavoriteCharacter = await listFavoriteCharacterService.execute(emailUser, Number(page), Number(limit));
     return res.status(200).send(listFavoriteCharacter);
   };
 

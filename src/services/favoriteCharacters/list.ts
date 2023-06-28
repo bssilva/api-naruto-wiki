@@ -2,9 +2,9 @@ import FavoriteCharactersRepository from "../../repository/favorite-characters-r
 import CharacterRespository from "../../repository/characters-repository";
 
 export default class ListFavoriteCharacterService {
-  async execute(emailUser: string) {
+  async execute(emailUser: string, page: number, limit: number) {
     const favoriteCharacterRepository = new FavoriteCharactersRepository();
-    const favoriteCharacter = await favoriteCharacterRepository.list(emailUser);
+    const favoriteCharacter = await favoriteCharacterRepository.list(emailUser, page, limit);
 
     const characterRepository = new CharacterRespository();
     let responseFavoriteClan = []

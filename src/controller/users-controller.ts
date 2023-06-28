@@ -11,7 +11,9 @@ class UserController{
   list = async (req: Request, res: Response): Promise<Response> => {
     const listUserService = new ListUserService();
 
-    const users = await listUserService.execute();
+    const { page = 1, limit = 10 } = req.query;
+    
+    const users = await listUserService.execute(Number(page), Number(limit));
 
     return res.status(200).send(users);
   }; 

@@ -7,8 +7,11 @@ import S3Storage from "../utils/S3Storage";
 class ClansRepository {
   private prisma = new PrismaClient();
 
-  async list(): Promise<IResponseClan[]> {
-    const clans = await this.prisma.clans.findMany();
+  async list(page: number, limit: number): Promise<IResponseClan[]> {
+    const clans = await this.prisma.clans.findMany({
+      skip: (page - 1) * limit, 
+      take: limit, 
+    });
     return clans;
   };
 

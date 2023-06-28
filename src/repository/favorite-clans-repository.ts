@@ -6,9 +6,11 @@ import IResponseFavoriteClan from "../interfaces/favoriteClans/IResponseFavorite
 class ClansRepository {
   private prisma = new PrismaClient();
 
-  async list(emailUser: string): Promise<IResponseFavoriteClan[]> {
+  async list(emailUser: string, page: number, limit: number): Promise<IResponseFavoriteClan[]> {
     const favoriteClans = await this.prisma.favoriteClans.findMany({
       where: { emailUser },
+      skip: (page - 1) * limit, 
+      take: limit, 
     });
     return favoriteClans;
   }

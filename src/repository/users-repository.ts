@@ -7,64 +7,83 @@ import S3Storage from "../utils/S3Storage";
 class UserRepository {
   private prisma = new PrismaClient();
 
-  async list() : Promise<IResponseUser[]> {
-    const users = await this.prisma.users.findMany();
+  async list(page: number, limit: number): Promise<IResponseUser[]> {
+    const users = await this.prisma.users.findMany({
+      skip: (page - 1) * limit, 
+      take: limit, 
+    });
     return users;
-  };
+  }
 
-  async findOneById(id: number) : Promise<IResponseUser> {
+  async findOneById(id: number): Promise<IResponseUser> {
     const user = await this.prisma.users.findUnique({
-      where: { id } ,
+      where: { id },
     });
-    
+
     if (!user) throw new AppError("Usuário não encontrado", 404);
 
     return user;
-  };
+  }
 
-  async findOneByEmail(email: string) : Promise<IResponseUser> {
+  async findOneByEmail(email: string): Promise<IResponseUser> {
     const user = await this.prisma.users.findUnique({
-      where: { email } ,
+      where: { email },
     });
-    
+
     if (!user) throw new AppError("Usuário não encontrado", 404);
 
     return user;
-  };
-  
-  async create({name, avatar, email, password, birth_date, createdAt, role = "User"}: IRequestUser) : Promise<IResponseUser>{
+  }
+
+  async create({
+    name,
+    avatar,
+    email,
+    password,
+    birth_date,
+    createdAt,
+    role = "User",
+  }: IRequestUser): Promise<IResponseUser> {
     try {
-      if(!avatar) throw new AppError("Avatar do usuário é obrigatório", 400);
-      
+      if (!avatar) throw new AppError("Avatar do usuário é obrigatório", 400);
+
       const user = await this.prisma.users.create({
-        data: { name, avatar, email, password, birth_date, createdAt, role }
+        data: { name, avatar, email, password, birth_date, createdAt, role },
       });
 
       return user;
     } catch (err) {
       const s3Storage = new S3Storage();
-      avatar && await s3Storage.rollbackImg(avatar, "avatar-user-api");
-      
+      avatar && (await s3Storage.rollbackImg(avatar, "avatar-user-api"));
+
       throw new AppError("Email ja existente", 409);
     }
-  };
+  }
 
-  async update({id, name, avatar, email, password, birth_date, createdAt, role = "User"}: IRequestUser) : Promise<IResponseUser>{
-    try{
-
+  async update({
+    id,
+    name,
+    avatar,
+    email,
+    password,
+    birth_date,
+    createdAt,
+    role = "User",
+  }: IRequestUser): Promise<IResponseUser> {
+    try {
       const user = await this.prisma.users.update({
         where: { id },
-        data: { name, avatar, email, password, birth_date, createdAt, role }
+        data: { name, avatar, email, password, birth_date, createdAt, role },
       });
-      
+
       return user;
-    }catch(err){
+    } catch (err) {
       const s3Storage = new S3Storage();
-      avatar && await s3Storage.rollbackImg(avatar, "avatar-user-api");
-      
+      avatar && (await s3Storage.rollbackImg(avatar, "avatar-user-api"));
+
       throw new AppError("Email ja existente", 409);
     }
-  };
+  }
 
   async delete(id: number): Promise<IResponseUser> {
     const user = await this.prisma.users.delete({

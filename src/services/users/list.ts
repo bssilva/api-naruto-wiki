@@ -1,10 +1,10 @@
 import UserRepository from "../../repository/users-repository";
 
 export default class ListUserService {
-  async execute() {
+  async execute(page: number, limit: number) {
     const userRepository = new UserRepository();
 
-    const users = await userRepository.list();
+    const users = await userRepository.list(page, limit);
 
     const response = users.map((user) => {
       return {

@@ -6,9 +6,11 @@ import IResponseFavoriteCharacters from "../interfaces/favoriteCharacters/IRespo
 class FavoriteCharactersRepository {
   private prisma = new PrismaClient();
 
-  async list(emailUser: string): Promise<IResponseFavoriteCharacters[]> {
+  async list(emailUser: string, page: number, limit: number): Promise<IResponseFavoriteCharacters[]> {
     const favoriteCharacters = await this.prisma.favoriteCharacters.findMany({
-      where: { emailUser }
+      where: { emailUser },
+      skip: (page - 1) * limit, 
+      take: limit, 
     });
 
     return favoriteCharacters;

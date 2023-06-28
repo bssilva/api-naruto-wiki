@@ -5,9 +5,11 @@ interface IRequestQueryCharacter {
   sexo?: string;
   classificacao?: string;
   cla?: string;
+  page: number;
+  limit: number;
 }
 export default class ListCharacterService {
-  async execute({estado, sexo, classificacao, nome, cla} : IRequestQueryCharacter) {
+  async execute({estado, sexo, classificacao, nome, cla, page, limit} : IRequestQueryCharacter) {
     const characterRepository = new CharacterRepository();
 
     let characters
@@ -19,10 +21,10 @@ export default class ListCharacterService {
     if(classificacao) filterOptions.classificacao = classificacao;
     if(cla) filterOptions.cla = cla;
 
-    characters = await characterRepository.list({filterOptions});
+    characters = await characterRepository.list({filterOptions}, page, limit);
 
     characters = characters.map((character) => {
-      character.about = JSON.parse(character.about[0]);
+      character.about = character.about.length === 1 ? JSON.parse(character.about[0]) : character.about;
       return character;
     });
 

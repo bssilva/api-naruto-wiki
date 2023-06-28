@@ -8,9 +8,11 @@ import DeleteClanService from "../services/clans/delete";
 
 class ClansController {
   list = async (req: Request, res: Response): Promise<Response> => {
+    const { page = 1, limit = 10 } = req.query;
+  
     const listClanService = new ListClanService();
 
-    const clans = await listClanService.execute();
+    const clans = await listClanService.execute(Number(page), Number(limit));
 
     return res.status(200).send(clans);
   };
