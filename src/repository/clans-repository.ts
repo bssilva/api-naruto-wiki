@@ -25,14 +25,12 @@ class ClansRepository {
     return clan;
   };
 
-  async findOneByName(name: string): Promise<IResponseClan> {
+  async findOneByName(name: string): Promise<IResponseClan | Object> {
     const clan = await this.prisma.clans.findUnique({
       where: { name },
     });
 
-    if (!clan) throw new AppError("Clan não encontrado.", 404);
-
-    return clan;
+    return clan || {};
   };
 
   async create({ name, link, icon = "" }: IRequestClan): Promise<IResponseClan> {
