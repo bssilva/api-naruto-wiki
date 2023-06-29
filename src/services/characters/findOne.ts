@@ -15,11 +15,12 @@ export default class FindOneCharacterService {
     const characterRepository = new CharacterRepository();
 
     const character = await characterRepository.findOne(newId);
-    const infoJson = character.info && JSON.parse(character.info.toString());
+        
+    const infoJson = character.info && typeof character.info === 'string' ? JSON.parse(character.info) : character.info;
     character.info = infoJson;
     character.about = character.about.length === 1 ? JSON.parse(character.about[0]) : character.about;
     
-    if(infoJson['Clã']){
+    if("Clã" in infoJson){
       const clanRepository = new ClanRepository()
       const clan = await clanRepository.findOneByName(infoJson['Clã'])
 

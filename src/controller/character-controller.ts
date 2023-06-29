@@ -49,6 +49,7 @@ class ClansController {
         const { statusCode } = err;
         return res.status(statusCode).send(err);
       }
+      console.log({err})
       return res.status(400).send(err);
     }
   };
