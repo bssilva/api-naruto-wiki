@@ -19,7 +19,7 @@ export default class ListCharacterService {
     if(sexo) filterOptions.sexo = sexo;
     if(nome) filterOptions.name = { contains: nome };
     if(classificacao) filterOptions.classificacao = classificacao;
-    if(cla) filterOptions.cla = cla;
+    if(cla) filterOptions.clan = cla;
 
     characters = await characterRepository.list({filterOptions}, page, limit);
 
